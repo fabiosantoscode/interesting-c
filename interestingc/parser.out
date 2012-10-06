@@ -1,0 +1,174 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    semicolon
+    multiline_comment
+    percent_sign
+    comma
+    minus_sign
+    octal_fractional_number_literal
+    solidus
+    reverse_solidus
+    octal_number_literal
+    decimal_fractional_number_literal
+    close_tag
+    close_paren
+    open_tag
+    hexadecimal_fractional_number_literal
+    hash
+    string_literal
+    hexadecimal_number_literal
+    siphon
+    bang
+    open_paren
+    character_literal
+    close_brace
+    open_square
+    at_sign
+    whitespace
+    times_sign
+    equal_sign
+    open_brace
+    pipe
+    dot
+    colon
+    close_square
+    identifier
+    and_sign
+    singleline_comment
+
+Grammar
+
+Rule 0     S' -> Expression
+Rule 1     Expression -> DecimalNumberLiteral
+Rule 2     Expression -> Sum
+Rule 3     Sum -> Expression plus_sign Expression
+Rule 4     Literal -> DecimalNumberLiteral
+Rule 5     DecimalNumberLiteral -> decimal_number_literal
+
+Terminals, with rules where they appear
+
+and_sign             : 
+at_sign              : 
+bang                 : 
+character_literal    : 
+close_brace          : 
+close_paren          : 
+close_square         : 
+close_tag            : 
+colon                : 
+comma                : 
+decimal_fractional_number_literal : 
+decimal_number_literal : 5
+dot                  : 
+equal_sign           : 
+error                : 
+hash                 : 
+hexadecimal_fractional_number_literal : 
+hexadecimal_number_literal : 
+identifier           : 
+minus_sign           : 
+multiline_comment    : 
+octal_fractional_number_literal : 
+octal_number_literal : 
+open_brace           : 
+open_paren           : 
+open_square          : 
+open_tag             : 
+percent_sign         : 
+pipe                 : 
+plus_sign            : 3
+reverse_solidus      : 
+semicolon            : 
+singleline_comment   : 
+siphon               : 
+solidus              : 
+string_literal       : 
+times_sign           : 
+whitespace           : 
+
+Nonterminals, with rules where they appear
+
+DecimalNumberLiteral : 1 4
+Expression           : 3 3 0
+Literal              : 
+Sum                  : 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Expression
+    (1) Expression -> . DecimalNumberLiteral
+    (2) Expression -> . Sum
+    (5) DecimalNumberLiteral -> . decimal_number_literal
+    (3) Sum -> . Expression plus_sign Expression
+
+    decimal_number_literal shift and go to state 4
+
+    Sum                            shift and go to state 1
+    DecimalNumberLiteral           shift and go to state 2
+    Expression                     shift and go to state 3
+
+state 1
+
+    (2) Expression -> Sum .
+
+    plus_sign       reduce using rule 2 (Expression -> Sum .)
+    $end            reduce using rule 2 (Expression -> Sum .)
+
+
+state 2
+
+    (1) Expression -> DecimalNumberLiteral .
+
+    plus_sign       reduce using rule 1 (Expression -> DecimalNumberLiteral .)
+    $end            reduce using rule 1 (Expression -> DecimalNumberLiteral .)
+
+
+state 3
+
+    (0) S' -> Expression .
+    (3) Sum -> Expression . plus_sign Expression
+
+    plus_sign       shift and go to state 5
+
+
+state 4
+
+    (5) DecimalNumberLiteral -> decimal_number_literal .
+
+    plus_sign       reduce using rule 5 (DecimalNumberLiteral -> decimal_number_literal .)
+    $end            reduce using rule 5 (DecimalNumberLiteral -> decimal_number_literal .)
+
+
+state 5
+
+    (3) Sum -> Expression plus_sign . Expression
+    (1) Expression -> . DecimalNumberLiteral
+    (2) Expression -> . Sum
+    (5) DecimalNumberLiteral -> . decimal_number_literal
+    (3) Sum -> . Expression plus_sign Expression
+
+    decimal_number_literal shift and go to state 4
+
+    Sum                            shift and go to state 1
+    DecimalNumberLiteral           shift and go to state 2
+    Expression                     shift and go to state 6
+
+state 6
+
+    (3) Sum -> Expression plus_sign Expression .
+    (3) Sum -> Expression . plus_sign Expression
+
+  ! shift/reduce conflict for plus_sign resolved as shift
+    $end            reduce using rule 3 (Sum -> Expression plus_sign Expression .)
+    plus_sign       shift and go to state 5
+
+  ! plus_sign       [ reduce using rule 3 (Sum -> Expression plus_sign Expression .) ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for plus_sign in state 6 resolved as shift

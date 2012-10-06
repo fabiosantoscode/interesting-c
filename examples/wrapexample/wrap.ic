@@ -1,0 +1,54 @@
+
+signature Printable {
+    
+}
+
+
+// anonymous null signature: match any type. Below wrap takes precedence since it comes after.
+wrap Lazy for ({}) {
+    __access__() (when this is null){
+        this = capsule.constructor();
+        shed Lazy from this;
+        return this;
+    }
+}
+
+signature HasConstructor{
+    constructor(...) apply;
+}
+
+// Able to wrap anything that implements this signature
+wrap Lazy for ({constructor(...) apply}){
+    polymorphic[] constructor_arguments;
+    
+    constructor (...) apply (when this is null){
+        this.constructor_arguments = function.arguments;
+    }
+    
+    polymorphic __access__() (when this is null){
+        this = capsule.constructor();
+        return this.__access__();
+        shed Lazy from this;
+        return this;
+    }
+}
+
+wrap WithName for ({}){
+    string name;
+}
+wrap WithAge for ({}){
+    Date birthday;
+}
+capsule Employee{
+    Company company;
+}
+
+employee = Employee();
+
+wrap employee with WithName
+wrap employee with WithAge
+
+print(employee.age);
+print(employee.name);
+
+

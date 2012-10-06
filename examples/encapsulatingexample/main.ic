@@ -1,0 +1,64 @@
+
+capsule Counter (of int){
+    static Array<Counter> all_counters;
+    
+    constructor(){
+        this = 0;
+        all_counters.add(this);
+    }
+    
+    property get this(){
+        return this + 1;
+    }
+    
+    increment(){
+        this++;
+    }
+}
+
+capsule LinkedListNode<type ArrayItemType>{
+    ArrayItemType data;
+    pointer to LinkedListNode next_node;
+    
+    constructor(ArrayItemType data){
+        this.data = data;
+    }
+}
+
+capsule LinkedList<type T> (of pointer to private LinkedListNode<T>){
+    int size;
+    
+    push(T data){
+        LinkedListNode new_node = new LinkedListNode(data);
+        
+        if (this is null){
+            point new_node.next_node to this.next_node;
+        }
+        /* Code in the below comment would yield a compiler error. No
+        shooting yourself in the foot. */
+        // this = new_node; 
+        point this to new_node;
+        this.size++;
+    }
+    
+    T pop(){
+        if (this is null){
+            return null;
+        }
+        
+        T data = this.data;
+        LinkedListNode next = this.next;
+        
+        delete this();
+        point this to next;
+        
+        this.size--;
+        
+        return data;
+    }
+    
+    constructor(){
+        this = null;
+    }
+}
+

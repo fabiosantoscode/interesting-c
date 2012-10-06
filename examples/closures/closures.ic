@@ -1,0 +1,20 @@
+
+// callbacks and closures
+
+for_the_future(){
+    
+    int a = 1;
+    
+    int cb(){
+        outer a;
+        
+        a++;
+        return a;
+    }
+    
+    // the callback keyword takes care of converting CB to a
+    // pointer-to-function. You could also use "pointer to"
+    somehow_execute_something_in_the_future(callback cb);
+}
+
+

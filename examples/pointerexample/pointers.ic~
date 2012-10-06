@@ -1,0 +1,41 @@
+/* Pointers
+
+Caused half a century worth of frustration, tears, bugs and memory leaks. 
+
+They are usually stored somewhere, so I thought they would go well with capsules, module locals and function static locals. This is because their lifetime is verifiable at runtime.
+
+There will be several kinds of pointers:
+loose (default, but disallowed in capsules) - maps to a regular C pointer and comes with all the associated trouble.
+own (capsule only) - Capsule owns the reference. It is initialized with the capsule and deleted with the capsule.
+refcounted - Pointer is not a C pointer. It's a struct with the pointer and the ref count, which is incremented when the pointer is assigned to a capsule, decremented when it leaves all scopes
+*/
+
+/*
+Module space
+
+When declared in module space, interesting-
+*/
+pointer to int some_int;
+
+/*
+In functions
+*/
+int func(){
+    static pointer to
+}
+
+
+/*
+In capsules
+*/
+capsule SomeCapsule(){
+    burrowed pointer to OtherCapsule burrowed_ptr;
+    own pointer to OtherCapsule burrowed_ptr;
+    refcounted pointer to OtherCapsule refcount_ptr;
+    autocreated pointer to OtherCapsule autocreate_ptr;
+    
+    void foo(){
+        
+    }
+}
+

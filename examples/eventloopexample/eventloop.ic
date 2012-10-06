@@ -1,0 +1,12 @@
+/* This example demonstrates how you can run an interesting-c program as an event loop */
+
+int main(){
+    
+}
+
+__main__ = eventloop main;
+
+/* __main__ defaults to int main() when there is one, but eventloop allows you to declare an event loop and the function which sets it up.
+
+It takes an expression, so you can use a function from another module and give it parameters, useful for building external libraries. */
+

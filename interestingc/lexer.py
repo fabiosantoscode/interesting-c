@@ -42,6 +42,7 @@ tokens = [
     'dot',
     'hash',
     'bang',
+    'question_mark',
     'and_sign',
     'percent_sign',
     'siphon',
@@ -100,6 +101,7 @@ t_colon = r':'
 t_dot = r'\.'
 t_hash = r'\#'
 t_bang = r'!'
+t_question_mark = r'\?'
 t_and_sign = r'&'
 t_percent_sign = r'%'
 t_siphon = r'\$'
@@ -146,7 +148,7 @@ def update_and_get_values(input_str):
 
 
 
-class ParserTest(unittest.TestCase):
+class LexerTest(unittest.TestCase):
     def setUp(self):
         pass
     
@@ -198,9 +200,10 @@ class ParserTest(unittest.TestCase):
             ('octal_number_literal', '031')])
         
         self.assertEqual(update_and_get_names(
-                '{}();:.,!*+-/#'), [
+                '{}()?;:.,!*+-/#'), [
             'open_brace', 'close_brace',
             'open_paren', 'close_paren',
+            'question_mark',
             'semicolon',
             'colon',
             'dot',
@@ -281,7 +284,7 @@ class ParserTest(unittest.TestCase):
         }
         ''', [
             'identifier', 'identifier',
-            'open_paren', 'close_paren', 'open_brace',
+            'open_paren', 'close_paren', 'open_brace', 'identifier', 
             'decimal_number_literal', 'semicolon', 'close_brace'])
     
     def test_complete_capsule(self):

@@ -11,29 +11,45 @@
 
 class Expression(object):
     '''
-     - Yields something of a certain type
+     - Yields a value of a certain type
      - Renderable
-     - Can contain itself
+     - Is a complex ad-hoc structure of 
     '''
     
-    def __init__(self, containee):
-        self.containee = containee.accept(Expression)
+    enclosing = '%s' # No enclosing
     
-    def get_type(self):
-        return self.yield_type
+    def __init__(self):
+        raise NotImplementedError('lang.Expression.__init__ must not'
+            ' be called directly')
     
-    def yield_(self):
-        raise NotImplementedError('Expression yield_ needs to yield something ')
+    def yields(self, *types):
+        try:
+            self.get_a_yield_type(*types)
+            return self
+        except KeyError: #empty set
+            raise Exception('Expected %s' % (', or '.join(types)))
+    
+    def get_yield_types(self):
+        return self.yield_types
+    
+    def get_a_yield_type(self, *types):
+        return set(types).intersection(set(self.get_yield_types())
+            ).pop()
+    
+    def yield_(self, type_):
+        return self
     
     def accept(self, expected):
         if not issubclass(self.__class__, expected):
-            raise Exception('Expected %s, instead found %s' % (expected, self.__class__.__name__))
+            raise Exception('Expected %s, instead found %s'
+                % (expected, self.__class__.__name__))
         else:
             return self
     
     def render(self):
         raise NotImplementedError
-    
+
+
 
 #class Statement(object):
 #    '''

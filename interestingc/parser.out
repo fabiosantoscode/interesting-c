@@ -6,169 +6,1378 @@ Unused terminals:
     multiline_comment
     percent_sign
     comma
-    minus_sign
     octal_fractional_number_literal
     solidus
-    reverse_solidus
     octal_number_literal
     decimal_fractional_number_literal
     close_tag
-    close_paren
     open_tag
     hexadecimal_fractional_number_literal
     hash
     string_literal
     hexadecimal_number_literal
     siphon
-    bang
-    open_paren
     character_literal
     close_brace
     open_square
     at_sign
     whitespace
-    times_sign
     equal_sign
     open_brace
-    pipe
     dot
-    colon
     close_square
-    identifier
-    and_sign
     singleline_comment
 
 Grammar
 
 Rule 0     S' -> Expression
-Rule 1     Expression -> DecimalNumberLiteral
-Rule 2     Expression -> Sum
-Rule 3     Sum -> Expression plus_sign Expression
-Rule 4     Literal -> DecimalNumberLiteral
-Rule 5     DecimalNumberLiteral -> decimal_number_literal
+Rule 1     Expression -> Literal
+Rule 2     Expression -> Multiplication
+Rule 3     Expression -> Division
+Rule 4     Expression -> Sum
+Rule 5     Expression -> Subtraction
+Rule 6     Expression -> And
+Rule 7     Expression -> Or
+Rule 8     Expression -> Not
+Rule 9     Expression -> TernaryExpression
+Rule 10    Expression -> ExpressionEnclosedInParens
+Rule 11    Expression -> NoExpression
+Rule 12    NoExpression -> <empty>
+Rule 13    ExpressionEnclosedInParens -> open_paren Expression close_paren
+Rule 14    Not -> bang Expression
+Rule 15    Sum -> Expression plus_sign Expression
+Rule 16    Multiplication -> Expression times_sign Expression
+Rule 17    Subtraction -> Expression minus_sign Expression
+Rule 18    Division -> Expression reverse_solidus Expression
+Rule 19    And -> Expression and_sign and_sign Expression
+Rule 20    Or -> Expression pipe pipe Expression
+Rule 21    TernaryExpression -> Expression question_mark Expression colon Expression
+Rule 22    Literal -> DecimalNumberLiteral
+Rule 23    Term -> Literal
+Rule 24    Term -> Identifier
+Rule 25    Identifier -> identifier
+Rule 26    DecimalNumberLiteral -> decimal_number_literal
 
 Terminals, with rules where they appear
 
-and_sign             : 
+and_sign             : 19 19
 at_sign              : 
-bang                 : 
+bang                 : 14
 character_literal    : 
 close_brace          : 
-close_paren          : 
+close_paren          : 13
 close_square         : 
 close_tag            : 
-colon                : 
+colon                : 21
 comma                : 
 decimal_fractional_number_literal : 
-decimal_number_literal : 5
+decimal_number_literal : 26
 dot                  : 
 equal_sign           : 
 error                : 
 hash                 : 
 hexadecimal_fractional_number_literal : 
 hexadecimal_number_literal : 
-identifier           : 
-minus_sign           : 
+identifier           : 25
+minus_sign           : 17
 multiline_comment    : 
 octal_fractional_number_literal : 
 octal_number_literal : 
 open_brace           : 
-open_paren           : 
+open_paren           : 13
 open_square          : 
 open_tag             : 
 percent_sign         : 
-pipe                 : 
-plus_sign            : 3
-reverse_solidus      : 
+pipe                 : 20 20
+plus_sign            : 15
+question_mark        : 21
+reverse_solidus      : 18
 semicolon            : 
 singleline_comment   : 
 siphon               : 
 solidus              : 
 string_literal       : 
-times_sign           : 
+times_sign           : 16
 whitespace           : 
 
 Nonterminals, with rules where they appear
 
-DecimalNumberLiteral : 1 4
-Expression           : 3 3 0
-Literal              : 
-Sum                  : 2
+And                  : 6
+DecimalNumberLiteral : 22
+Division             : 3
+Expression           : 13 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 21 0
+ExpressionEnclosedInParens : 10
+Identifier           : 24
+Literal              : 1 23
+Multiplication       : 2
+NoExpression         : 11
+Not                  : 8
+Or                   : 7
+Subtraction          : 5
+Sum                  : 4
+Term                 : 
+TernaryExpression    : 9
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . Expression
-    (1) Expression -> . DecimalNumberLiteral
-    (2) Expression -> . Sum
-    (5) DecimalNumberLiteral -> . decimal_number_literal
-    (3) Sum -> . Expression plus_sign Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
 
-    decimal_number_literal shift and go to state 4
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
 
-    Sum                            shift and go to state 1
-    DecimalNumberLiteral           shift and go to state 2
-    Expression                     shift and go to state 3
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 13
+    Or                             shift and go to state 7
 
 state 1
 
-    (2) Expression -> Sum .
+    (9) Expression -> TernaryExpression .
 
-    plus_sign       reduce using rule 2 (Expression -> Sum .)
-    $end            reduce using rule 2 (Expression -> Sum .)
+    colon           reduce using rule 9 (Expression -> TernaryExpression .)
+    times_sign      reduce using rule 9 (Expression -> TernaryExpression .)
+    reverse_solidus reduce using rule 9 (Expression -> TernaryExpression .)
+    plus_sign       reduce using rule 9 (Expression -> TernaryExpression .)
+    minus_sign      reduce using rule 9 (Expression -> TernaryExpression .)
+    and_sign        reduce using rule 9 (Expression -> TernaryExpression .)
+    pipe            reduce using rule 9 (Expression -> TernaryExpression .)
+    question_mark   reduce using rule 9 (Expression -> TernaryExpression .)
+    $end            reduce using rule 9 (Expression -> TernaryExpression .)
+    close_paren     reduce using rule 9 (Expression -> TernaryExpression .)
 
 
 state 2
 
-    (1) Expression -> DecimalNumberLiteral .
+    (4) Expression -> Sum .
 
-    plus_sign       reduce using rule 1 (Expression -> DecimalNumberLiteral .)
-    $end            reduce using rule 1 (Expression -> DecimalNumberLiteral .)
+    colon           reduce using rule 4 (Expression -> Sum .)
+    times_sign      reduce using rule 4 (Expression -> Sum .)
+    reverse_solidus reduce using rule 4 (Expression -> Sum .)
+    plus_sign       reduce using rule 4 (Expression -> Sum .)
+    minus_sign      reduce using rule 4 (Expression -> Sum .)
+    and_sign        reduce using rule 4 (Expression -> Sum .)
+    pipe            reduce using rule 4 (Expression -> Sum .)
+    question_mark   reduce using rule 4 (Expression -> Sum .)
+    $end            reduce using rule 4 (Expression -> Sum .)
+    close_paren     reduce using rule 4 (Expression -> Sum .)
 
 
 state 3
 
-    (0) S' -> Expression .
-    (3) Sum -> Expression . plus_sign Expression
+    (1) Expression -> Literal .
 
-    plus_sign       shift and go to state 5
+    colon           reduce using rule 1 (Expression -> Literal .)
+    times_sign      reduce using rule 1 (Expression -> Literal .)
+    reverse_solidus reduce using rule 1 (Expression -> Literal .)
+    plus_sign       reduce using rule 1 (Expression -> Literal .)
+    minus_sign      reduce using rule 1 (Expression -> Literal .)
+    and_sign        reduce using rule 1 (Expression -> Literal .)
+    pipe            reduce using rule 1 (Expression -> Literal .)
+    question_mark   reduce using rule 1 (Expression -> Literal .)
+    $end            reduce using rule 1 (Expression -> Literal .)
+    close_paren     reduce using rule 1 (Expression -> Literal .)
 
 
 state 4
 
-    (5) DecimalNumberLiteral -> decimal_number_literal .
+    (11) Expression -> NoExpression .
 
-    plus_sign       reduce using rule 5 (DecimalNumberLiteral -> decimal_number_literal .)
-    $end            reduce using rule 5 (DecimalNumberLiteral -> decimal_number_literal .)
+    colon           reduce using rule 11 (Expression -> NoExpression .)
+    times_sign      reduce using rule 11 (Expression -> NoExpression .)
+    reverse_solidus reduce using rule 11 (Expression -> NoExpression .)
+    plus_sign       reduce using rule 11 (Expression -> NoExpression .)
+    minus_sign      reduce using rule 11 (Expression -> NoExpression .)
+    and_sign        reduce using rule 11 (Expression -> NoExpression .)
+    pipe            reduce using rule 11 (Expression -> NoExpression .)
+    question_mark   reduce using rule 11 (Expression -> NoExpression .)
+    $end            reduce using rule 11 (Expression -> NoExpression .)
+    close_paren     reduce using rule 11 (Expression -> NoExpression .)
 
 
 state 5
 
-    (3) Sum -> Expression plus_sign . Expression
-    (1) Expression -> . DecimalNumberLiteral
-    (2) Expression -> . Sum
-    (5) DecimalNumberLiteral -> . decimal_number_literal
-    (3) Sum -> . Expression plus_sign Expression
+    (22) Literal -> DecimalNumberLiteral .
 
-    decimal_number_literal shift and go to state 4
+    times_sign      reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    reverse_solidus reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    plus_sign       reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    minus_sign      reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    and_sign        reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    pipe            reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    question_mark   reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    $end            reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    close_paren     reduce using rule 22 (Literal -> DecimalNumberLiteral .)
+    colon           reduce using rule 22 (Literal -> DecimalNumberLiteral .)
 
-    Sum                            shift and go to state 1
-    DecimalNumberLiteral           shift and go to state 2
-    Expression                     shift and go to state 6
 
 state 6
 
-    (3) Sum -> Expression plus_sign Expression .
-    (3) Sum -> Expression . plus_sign Expression
+    (3) Expression -> Division .
 
+    colon           reduce using rule 3 (Expression -> Division .)
+    times_sign      reduce using rule 3 (Expression -> Division .)
+    reverse_solidus reduce using rule 3 (Expression -> Division .)
+    plus_sign       reduce using rule 3 (Expression -> Division .)
+    minus_sign      reduce using rule 3 (Expression -> Division .)
+    and_sign        reduce using rule 3 (Expression -> Division .)
+    pipe            reduce using rule 3 (Expression -> Division .)
+    question_mark   reduce using rule 3 (Expression -> Division .)
+    $end            reduce using rule 3 (Expression -> Division .)
+    close_paren     reduce using rule 3 (Expression -> Division .)
+
+
+state 7
+
+    (7) Expression -> Or .
+
+    colon           reduce using rule 7 (Expression -> Or .)
+    times_sign      reduce using rule 7 (Expression -> Or .)
+    reverse_solidus reduce using rule 7 (Expression -> Or .)
+    plus_sign       reduce using rule 7 (Expression -> Or .)
+    minus_sign      reduce using rule 7 (Expression -> Or .)
+    and_sign        reduce using rule 7 (Expression -> Or .)
+    pipe            reduce using rule 7 (Expression -> Or .)
+    question_mark   reduce using rule 7 (Expression -> Or .)
+    $end            reduce using rule 7 (Expression -> Or .)
+    close_paren     reduce using rule 7 (Expression -> Or .)
+
+
+state 8
+
+    (5) Expression -> Subtraction .
+
+    colon           reduce using rule 5 (Expression -> Subtraction .)
+    times_sign      reduce using rule 5 (Expression -> Subtraction .)
+    reverse_solidus reduce using rule 5 (Expression -> Subtraction .)
+    plus_sign       reduce using rule 5 (Expression -> Subtraction .)
+    minus_sign      reduce using rule 5 (Expression -> Subtraction .)
+    and_sign        reduce using rule 5 (Expression -> Subtraction .)
+    pipe            reduce using rule 5 (Expression -> Subtraction .)
+    question_mark   reduce using rule 5 (Expression -> Subtraction .)
+    $end            reduce using rule 5 (Expression -> Subtraction .)
+    close_paren     reduce using rule 5 (Expression -> Subtraction .)
+
+
+state 9
+
+    (8) Expression -> Not .
+
+    colon           reduce using rule 8 (Expression -> Not .)
+    times_sign      reduce using rule 8 (Expression -> Not .)
+    reverse_solidus reduce using rule 8 (Expression -> Not .)
+    plus_sign       reduce using rule 8 (Expression -> Not .)
+    minus_sign      reduce using rule 8 (Expression -> Not .)
+    and_sign        reduce using rule 8 (Expression -> Not .)
+    pipe            reduce using rule 8 (Expression -> Not .)
+    question_mark   reduce using rule 8 (Expression -> Not .)
+    $end            reduce using rule 8 (Expression -> Not .)
+    close_paren     reduce using rule 8 (Expression -> Not .)
+
+
+state 10
+
+    (2) Expression -> Multiplication .
+
+    colon           reduce using rule 2 (Expression -> Multiplication .)
+    times_sign      reduce using rule 2 (Expression -> Multiplication .)
+    reverse_solidus reduce using rule 2 (Expression -> Multiplication .)
+    plus_sign       reduce using rule 2 (Expression -> Multiplication .)
+    minus_sign      reduce using rule 2 (Expression -> Multiplication .)
+    and_sign        reduce using rule 2 (Expression -> Multiplication .)
+    pipe            reduce using rule 2 (Expression -> Multiplication .)
+    question_mark   reduce using rule 2 (Expression -> Multiplication .)
+    $end            reduce using rule 2 (Expression -> Multiplication .)
+    close_paren     reduce using rule 2 (Expression -> Multiplication .)
+
+
+state 11
+
+    (14) Not -> bang . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 17
+    Or                             shift and go to state 7
+
+state 12
+
+    (13) ExpressionEnclosedInParens -> open_paren . Expression close_paren
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 18
+    Or                             shift and go to state 7
+
+state 13
+
+    (0) S' -> Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+
+state 14
+
+    (6) Expression -> And .
+
+    colon           reduce using rule 6 (Expression -> And .)
+    times_sign      reduce using rule 6 (Expression -> And .)
+    reverse_solidus reduce using rule 6 (Expression -> And .)
+    plus_sign       reduce using rule 6 (Expression -> And .)
+    minus_sign      reduce using rule 6 (Expression -> And .)
+    and_sign        reduce using rule 6 (Expression -> And .)
+    pipe            reduce using rule 6 (Expression -> And .)
+    question_mark   reduce using rule 6 (Expression -> And .)
+    $end            reduce using rule 6 (Expression -> And .)
+    close_paren     reduce using rule 6 (Expression -> And .)
+
+
+state 15
+
+    (26) DecimalNumberLiteral -> decimal_number_literal .
+
+    times_sign      reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    reverse_solidus reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    plus_sign       reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    minus_sign      reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    and_sign        reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    pipe            reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    question_mark   reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    $end            reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    close_paren     reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+    colon           reduce using rule 26 (DecimalNumberLiteral -> decimal_number_literal .)
+
+
+state 16
+
+    (10) Expression -> ExpressionEnclosedInParens .
+
+    colon           reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    times_sign      reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    reverse_solidus reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    plus_sign       reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    minus_sign      reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    and_sign        reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    pipe            reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    question_mark   reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    $end            reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+    close_paren     reduce using rule 10 (Expression -> ExpressionEnclosedInParens .)
+
+
+state 17
+
+    (14) Not -> bang Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
   ! shift/reduce conflict for plus_sign resolved as shift
-    $end            reduce using rule 3 (Sum -> Expression plus_sign Expression .)
-    plus_sign       shift and go to state 5
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 14 (Not -> bang Expression .)
+    close_paren     reduce using rule 14 (Not -> bang Expression .)
+    colon           reduce using rule 14 (Not -> bang Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
 
-  ! plus_sign       [ reduce using rule 3 (Sum -> Expression plus_sign Expression .) ]
+  ! times_sign      [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! reverse_solidus [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! plus_sign       [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! minus_sign      [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! and_sign        [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! pipe            [ reduce using rule 14 (Not -> bang Expression .) ]
+  ! question_mark   [ reduce using rule 14 (Not -> bang Expression .) ]
+
+
+state 18
+
+    (13) ExpressionEnclosedInParens -> open_paren Expression . close_paren
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+    close_paren     shift and go to state 26
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+
+state 19
+
+    (16) Multiplication -> Expression times_sign . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 27
+    Or                             shift and go to state 7
+
+state 20
+
+    (18) Division -> Expression reverse_solidus . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 28
+    Or                             shift and go to state 7
+
+state 21
+
+    (21) TernaryExpression -> Expression question_mark . Expression colon Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    colon           reduce using rule 12 (NoExpression -> .)
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 29
+    Or                             shift and go to state 7
+
+state 22
+
+    (15) Sum -> Expression plus_sign . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 30
+    Or                             shift and go to state 7
+
+state 23
+
+    (20) Or -> Expression pipe . pipe Expression
+
+    pipe            shift and go to state 31
+
+
+state 24
+
+    (17) Subtraction -> Expression minus_sign . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 32
+    Or                             shift and go to state 7
+
+state 25
+
+    (19) And -> Expression and_sign . and_sign Expression
+
+    and_sign        shift and go to state 33
+
+
+state 26
+
+    (13) ExpressionEnclosedInParens -> open_paren Expression close_paren .
+
+    times_sign      reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    reverse_solidus reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    plus_sign       reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    minus_sign      reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    and_sign        reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    pipe            reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    question_mark   reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    $end            reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    close_paren     reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+    colon           reduce using rule 13 (ExpressionEnclosedInParens -> open_paren Expression close_paren .)
+
+
+state 27
+
+    (16) Multiplication -> Expression times_sign Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    colon           reduce using rule 16 (Multiplication -> Expression times_sign Expression .)
+    $end            reduce using rule 16 (Multiplication -> Expression times_sign Expression .)
+    close_paren     reduce using rule 16 (Multiplication -> Expression times_sign Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! reverse_solidus [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! plus_sign       [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! minus_sign      [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! and_sign        [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! pipe            [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+  ! question_mark   [ reduce using rule 16 (Multiplication -> Expression times_sign Expression .) ]
+
+
+state 28
+
+    (18) Division -> Expression reverse_solidus Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 18 (Division -> Expression reverse_solidus Expression .)
+    close_paren     reduce using rule 18 (Division -> Expression reverse_solidus Expression .)
+    colon           reduce using rule 18 (Division -> Expression reverse_solidus Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! reverse_solidus [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! plus_sign       [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! minus_sign      [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! and_sign        [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! pipe            [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+  ! question_mark   [ reduce using rule 18 (Division -> Expression reverse_solidus Expression .) ]
+
+
+state 29
+
+    (21) TernaryExpression -> Expression question_mark Expression . colon Expression
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+    colon           shift and go to state 34
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+
+state 30
+
+    (15) Sum -> Expression plus_sign Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    close_paren     reduce using rule 15 (Sum -> Expression plus_sign Expression .)
+    $end            reduce using rule 15 (Sum -> Expression plus_sign Expression .)
+    colon           reduce using rule 15 (Sum -> Expression plus_sign Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! reverse_solidus [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! plus_sign       [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! minus_sign      [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! and_sign        [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! pipe            [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+  ! question_mark   [ reduce using rule 15 (Sum -> Expression plus_sign Expression .) ]
+
+
+state 31
+
+    (20) Or -> Expression pipe pipe . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 35
+    Or                             shift and go to state 7
+
+state 32
+
+    (17) Subtraction -> Expression minus_sign Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 17 (Subtraction -> Expression minus_sign Expression .)
+    close_paren     reduce using rule 17 (Subtraction -> Expression minus_sign Expression .)
+    colon           reduce using rule 17 (Subtraction -> Expression minus_sign Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! reverse_solidus [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! plus_sign       [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! minus_sign      [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! and_sign        [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! pipe            [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+  ! question_mark   [ reduce using rule 17 (Subtraction -> Expression minus_sign Expression .) ]
+
+
+state 33
+
+    (19) And -> Expression and_sign and_sign . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 36
+    Or                             shift and go to state 7
+
+state 34
+
+    (21) TernaryExpression -> Expression question_mark Expression colon . Expression
+    (1) Expression -> . Literal
+    (2) Expression -> . Multiplication
+    (3) Expression -> . Division
+    (4) Expression -> . Sum
+    (5) Expression -> . Subtraction
+    (6) Expression -> . And
+    (7) Expression -> . Or
+    (8) Expression -> . Not
+    (9) Expression -> . TernaryExpression
+    (10) Expression -> . ExpressionEnclosedInParens
+    (11) Expression -> . NoExpression
+    (22) Literal -> . DecimalNumberLiteral
+    (16) Multiplication -> . Expression times_sign Expression
+    (18) Division -> . Expression reverse_solidus Expression
+    (15) Sum -> . Expression plus_sign Expression
+    (17) Subtraction -> . Expression minus_sign Expression
+    (19) And -> . Expression and_sign and_sign Expression
+    (20) Or -> . Expression pipe pipe Expression
+    (14) Not -> . bang Expression
+    (21) TernaryExpression -> . Expression question_mark Expression colon Expression
+    (13) ExpressionEnclosedInParens -> . open_paren Expression close_paren
+    (12) NoExpression -> .
+    (26) DecimalNumberLiteral -> . decimal_number_literal
+
+    bang            shift and go to state 11
+    open_paren      shift and go to state 12
+    times_sign      reduce using rule 12 (NoExpression -> .)
+    reverse_solidus reduce using rule 12 (NoExpression -> .)
+    plus_sign       reduce using rule 12 (NoExpression -> .)
+    minus_sign      reduce using rule 12 (NoExpression -> .)
+    and_sign        reduce using rule 12 (NoExpression -> .)
+    pipe            reduce using rule 12 (NoExpression -> .)
+    question_mark   reduce using rule 12 (NoExpression -> .)
+    $end            reduce using rule 12 (NoExpression -> .)
+    close_paren     reduce using rule 12 (NoExpression -> .)
+    colon           reduce using rule 12 (NoExpression -> .)
+    decimal_number_literal shift and go to state 15
+
+    And                            shift and go to state 14
+    Division                       shift and go to state 6
+    TernaryExpression              shift and go to state 1
+    Sum                            shift and go to state 2
+    Not                            shift and go to state 9
+    Literal                        shift and go to state 3
+    ExpressionEnclosedInParens     shift and go to state 16
+    Subtraction                    shift and go to state 8
+    NoExpression                   shift and go to state 4
+    Multiplication                 shift and go to state 10
+    DecimalNumberLiteral           shift and go to state 5
+    Expression                     shift and go to state 37
+    Or                             shift and go to state 7
+
+state 35
+
+    (20) Or -> Expression pipe pipe Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 20 (Or -> Expression pipe pipe Expression .)
+    close_paren     reduce using rule 20 (Or -> Expression pipe pipe Expression .)
+    colon           reduce using rule 20 (Or -> Expression pipe pipe Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! reverse_solidus [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! plus_sign       [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! minus_sign      [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! and_sign        [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! pipe            [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+  ! question_mark   [ reduce using rule 20 (Or -> Expression pipe pipe Expression .) ]
+
+
+state 36
+
+    (19) And -> Expression and_sign and_sign Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 19 (And -> Expression and_sign and_sign Expression .)
+    close_paren     reduce using rule 19 (And -> Expression and_sign and_sign Expression .)
+    colon           reduce using rule 19 (And -> Expression and_sign and_sign Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! reverse_solidus [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! plus_sign       [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! minus_sign      [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! and_sign        [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! pipe            [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+  ! question_mark   [ reduce using rule 19 (And -> Expression and_sign and_sign Expression .) ]
+
+
+state 37
+
+    (21) TernaryExpression -> Expression question_mark Expression colon Expression .
+    (16) Multiplication -> Expression . times_sign Expression
+    (18) Division -> Expression . reverse_solidus Expression
+    (15) Sum -> Expression . plus_sign Expression
+    (17) Subtraction -> Expression . minus_sign Expression
+    (19) And -> Expression . and_sign and_sign Expression
+    (20) Or -> Expression . pipe pipe Expression
+    (21) TernaryExpression -> Expression . question_mark Expression colon Expression
+
+  ! shift/reduce conflict for times_sign resolved as shift
+  ! shift/reduce conflict for reverse_solidus resolved as shift
+  ! shift/reduce conflict for plus_sign resolved as shift
+  ! shift/reduce conflict for minus_sign resolved as shift
+  ! shift/reduce conflict for and_sign resolved as shift
+  ! shift/reduce conflict for pipe resolved as shift
+  ! shift/reduce conflict for question_mark resolved as shift
+    $end            reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .)
+    close_paren     reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .)
+    colon           reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .)
+    times_sign      shift and go to state 19
+    reverse_solidus shift and go to state 20
+    plus_sign       shift and go to state 22
+    minus_sign      shift and go to state 24
+    and_sign        shift and go to state 25
+    pipe            shift and go to state 23
+    question_mark   shift and go to state 21
+
+  ! times_sign      [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! reverse_solidus [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! plus_sign       [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! minus_sign      [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! and_sign        [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! pipe            [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
+  ! question_mark   [ reduce using rule 21 (TernaryExpression -> Expression question_mark Expression colon Expression .) ]
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for plus_sign in state 6 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 17 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 17 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 17 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 17 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 17 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 17 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 17 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 27 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 27 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 27 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 27 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 27 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 27 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 27 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 28 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 28 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 28 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 28 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 28 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 28 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 28 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 30 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 30 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 30 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 30 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 30 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 30 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 30 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 32 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 32 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 32 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 32 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 32 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 32 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 32 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 35 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 35 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 35 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 35 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 35 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 35 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 35 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 36 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 36 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 36 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 36 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 36 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 36 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 36 resolved as shift
+WARNING: shift/reduce conflict for times_sign in state 37 resolved as shift
+WARNING: shift/reduce conflict for reverse_solidus in state 37 resolved as shift
+WARNING: shift/reduce conflict for plus_sign in state 37 resolved as shift
+WARNING: shift/reduce conflict for minus_sign in state 37 resolved as shift
+WARNING: shift/reduce conflict for and_sign in state 37 resolved as shift
+WARNING: shift/reduce conflict for pipe in state 37 resolved as shift
+WARNING: shift/reduce conflict for question_mark in state 37 resolved as shift

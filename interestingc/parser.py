@@ -11,11 +11,13 @@ import ply.yacc as yacc
 import lexer
 import lang
 import lang.expressions
+import lang.specialexpr
 
 tokens = lexer.tokens
 
 def p_Expression(p):
-    '''Expression : Literal
+    '''Expression : ExpressionEnclosedInParens
+                  | Term
                   | Multiplication
                   | Division
                   | Sum
@@ -24,22 +26,21 @@ def p_Expression(p):
                   | Or
                   | Not
                   | TernaryExpression
-                  | ExpressionEnclosedInParens
                   | NoExpression'''
-    p[0] = p[1]
+    p[0] = p[1].accept(lang.Expression)
 
 def p_NoExpression(p):
     '''NoExpression : '''
-    p[0] = lang.expressions.NoExpression()
+    p[0] = lang.specialexpr.NoExpression()
 
 def p_ExpressionEnclosedInParens(p):
     '''ExpressionEnclosedInParens : open_paren Expression close_paren'''
-    p[0] = lang.expressions.ExpressionEnclosedInParens(p[2])
+    p[0] = lang.specialexpr.ExpressionEnclosedInParens(p[2])
 
 #unary
 def p_Not(p):
     '''Not : bang Expression'''
-    p[0] = lang.Expressions.NotExpression(p[2])
+    p[0] = lang.expressions.NotExpression(p[2])
 
 #binary
 def p_Sum(p):
@@ -70,10 +71,6 @@ def p_Or(p):
 def p_TernaryExpression(p):
     '''TernaryExpression : Expression question_mark Expression colon Expression'''
     p[0] = lang.expressions.TernaryExpression(p[1], p[3], p[5])
-
-#n'ary
-def p_ChainedComparison(p):
-    pass
 
 #literals
 def p_Literal(p):
@@ -106,37 +103,41 @@ class ParserTest(unittest.TestCase):
         pass
     
     def assert_expression_equal(self, test, s):
-        s = parse_expression(s).render()
+        s = parse_expression(s).to_c()
         self.assertEqual(s.replace(' ', ''), test.replace(' ', ''))
     
-    def assert_expression_python_equal(self, s, test):
-        self.assertEqual(eval(s), test(s))
-    
     def test_everything(self):
-        print parse_expression('1').render()
+        print parse_expression('1').to_c()
         # sum
-        print parse_expression('2+1').render()
-        print parse_expression('3+2+1').render()
+        print parse_expression('2+1').to_c()
+        print parse_expression('3+2+1').to_c()
 
-        print parse_expression('(1)').render()
-        print parse_expression('(2)+1').render()
-        print parse_expression('(3+2)+1').render()
-        print parse_expression('3+(2+1)').render()
+        print parse_expression('(1)').to_c()
+        print parse_expression('(2)+1').to_c()
+        print parse_expression('(3+2)+1').to_c()
+        print parse_expression('3+(2+1)').to_c()
         
         # mixing expressions
-        print parse_expression('2&&1').render()
-        print parse_expression('3*2+1').render()
-        print parse_expression('3/2*1').render()
+        print parse_expression('3*2+1').to_c()
+        print parse_expression('3/2*1').to_c()
 
-        print parse_expression('(3*2)+1/2').render()
-        print parse_expression('3*(2+1)||1').render()
+        print parse_expression('(3*2)+1/2').to_c()
+        print parse_expression('3*(2+1)||1').to_c()
         
         # no expression
-        print parse_expression('').render()
+        print parse_expression('').to_c()
+        
+        # bool expressions
+        print parse_expression('2&&1').to_c()
+        print parse_expression('1||2').to_c()
+        print parse_expression('!1').to_c()
     
     def test_ternary(self):
         tern = parse_expression('1?2:3').accept(lang.expressions.TernaryExpression)
-    
+        
+        self.assertEqual(tern.query.value, '1')
+        self.assertEqual(tern.if_true.value, '2')
+        self.assertEqual(tern.if_false.value, '3')
 if __name__ == '__main__':
     unittest.main()
 

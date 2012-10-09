@@ -13,40 +13,27 @@ class Expression(object):
     '''
      - Yields a value of a certain type
      - Renderable
-     - Is a complex ad-hoc structure of 
+     - Can be a complex ad-hoc modifiable syntax tree.
     '''
-    
-    enclosing = '%s' # No enclosing
     
     def __init__(self):
         raise NotImplementedError('lang.Expression.__init__ must not'
             ' be called directly')
     
-    def yields(self, *types):
-        try:
-            self.get_a_yield_type(*types)
-            return self
-        except KeyError: #empty set
-            raise Exception('Expected %s' % (', or '.join(types)))
+    def get_yield_type(self):
+        return self.yield_type
     
-    def get_yield_types(self):
-        return self.yield_types
-    
-    def get_a_yield_type(self, *types):
-        return set(types).intersection(set(self.get_yield_types())
-            ).pop()
-    
-    def yield_(self, type_):
-        return self
-    
-    def accept(self, expected):
+    def accept(self, expected, *ok_types):
         if not issubclass(self.__class__, expected):
             raise Exception('Expected %s, instead found %s'
                 % (expected, self.__class__.__name__))
-        else:
-            return self
+        if ok_types:
+            if not self.get_yield_type() in ok_types:
+                raise Exception('Expected %s' % (', or '.join(
+                    ok_types)))
+        return self
     
-    def render(self):
+    def to_c(self):
         raise NotImplementedError
 
 

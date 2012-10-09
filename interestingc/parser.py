@@ -12,6 +12,7 @@ import lexer
 import lang
 import lang.expressions
 import lang.specialexpr
+import lang.literals
 
 tokens = lexer.tokens
 
@@ -75,7 +76,7 @@ def p_TernaryExpression(p):
 #literals
 def p_Literal(p):
     '''Literal : DecimalNumberLiteral '''
-    p[0] = p[1].accept(lang.expressions.Literal)
+    p[0] = p[1].accept(lang.literals.Literal)
 
 def p_Term(p):
     '''Term : Literal
@@ -88,7 +89,7 @@ def p_Identifier(p):
 
 def p_DecimalNumberLiteral(p):
     '''DecimalNumberLiteral : decimal_number_literal '''
-    p[0] = lang.expressions.DecimalNumberLiteral(value=p[1])
+    p[0] = lang.literals.DecimalNumberLiteral(value=p[1])
 
 yacc.yacc()
 

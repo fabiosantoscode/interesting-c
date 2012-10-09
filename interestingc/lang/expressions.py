@@ -24,28 +24,6 @@ class _Unary(object):
         enclosing = '%s(%s)' if self.needs_parens else '%s%s'
         return enclosing % (self.sign, self.operand.to_c())
 
-class _Literal(object):
-    def to_c(self):
-        return self.c_value()
-    
-    def __init__(self, value):
-        self.value = value
-
-class _IntLiteral(_Literal):
-    yield_type = 'int'
-    
-    def __int__(self):
-        return int(self.value)
-
-class Literal(lang.Expression):
-    def __init__(self):
-        raise NotImplementedError('lang.expressions.Literal is not '
-            'meant to be used directly')
-
-class DecimalNumberLiteral(_IntLiteral, Literal):
-    def c_value(self):
-        return str(int(self.value, 10))
-
 class Sum(_Binary, lang.Expression):
     sign = '+'
 
@@ -76,19 +54,4 @@ class TernaryExpression(lang.Expression):
     
     def to_c(self):
         return (u'%s ? %s : %s' % self.query.to_c(), self.if_true.to_c(), self.if_false.to_c())
-
-class _ChainComparison(object):
-    yield_type = 'bool'
-    
-    def __init__(self, query, if_true, if_false):
-        self.query = query
-        self.if_true = if_true.accept(lang.Expression)
-        self.yield_type = self.if_true.get_yield_type()
-        self.if_false = if_false.accept(lang.Expression, self.yield_type)
-    
-    def to_c(self):
-        return (u'%s ? %s : %s' % self.query.to_c(), self.if_true.to_c(), self.if_false.to_c())
-
-
-
 

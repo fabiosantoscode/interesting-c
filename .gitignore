@@ -28,5 +28,6 @@ pip-log.txt
 
 *~
 
-#PLY parsetabs
+#PLY stuff
 *parsetab.py
+*.out

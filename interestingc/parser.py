@@ -16,6 +16,11 @@ import lang.literals
 
 tokens = lexer.tokens
 
+def p_FinalExpression(p):
+    '''FinalExpression : Expression
+                       | NoExpression'''
+    p[0] = p[1].accept(lang.Expression)
+
 def p_Expression(p):
     '''Expression : ExpressionEnclosedInParens
                   | And
@@ -27,8 +32,7 @@ def p_Expression(p):
                   | Sum
                   | Subtraction
                   | Comparison
-                  | TernaryExpression
-                  | NoExpression'''
+                  | TernaryExpression'''
     p[0] = p[1].accept(lang.Expression)
 
 def p_NoExpression(p):
@@ -71,19 +75,17 @@ def p_Or(p):
     '''Or : Expression pipe pipe Expression'''
     p[0] = lang.expressions.OrExpression(p[1], p[4])
 
-
-#comparisons (binary)
 def p_Comparison(p):
     '''Comparison : Expression ComparisonSign Expression'''
     p[0] = lang.expressions.Comparison(p[1], p[3], sign=p[2])
 
 def p_ComparisonSign(p):
-    '''ComparisonSign : close_tag
-                      | close_tag equal_sign
-                      | open_tag
-                      | open_tag equal_sign
-                      | bang equal_sign
-                      | equal_sign equal_sign'''
+    '''ComparisonSign : less_than_sign
+                      | less_than_or_equal_sign
+                      | greater_than_sign
+                      | greater_than_or_equal_sign
+                      | not_equal_sign
+                      | double_equal_sign'''
     p[0] = ''.join(p[1:][:2])
     
 

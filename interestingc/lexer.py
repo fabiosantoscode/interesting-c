@@ -47,8 +47,15 @@ tokens = [
     'percent_sign',
     'siphon',
     
+    #comparisons
+    'less_than_sign',
+    'greater_than_sign',
+    'less_than_or_equal_sign',
+    'greater_than_or_equal_sign',
+    'not_equal_sign',
+    'double_equal_sign',
+    
     # Open/close
-    'open_tag', 'close_tag',
     'open_paren', 'close_paren',
     'open_brace', 'close_brace',
     'open_square', 'close_square',
@@ -116,8 +123,12 @@ t_close_brace = r'}'
 t_open_square = r'\['
 t_close_square = r'\]'
 
-t_open_tag = r'<'
-t_close_tag = r'>'
+t_less_than_sign = r'<'
+t_greater_than_sign = r'>'
+t_less_than_or_equal_sign = r'<='
+t_greater_than_or_equal_sign = r'>='
+t_not_equal_sign = r'!='
+t_double_equal_sign = r'=='
 
 lex.lex()
 

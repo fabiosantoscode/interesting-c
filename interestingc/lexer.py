@@ -229,10 +229,10 @@ class LexerTest(unittest.TestCase):
         self.assertEqual(update_and_get_names('&%<$#>'), [
             'and_sign',
             'percent_sign',
-            'open_tag',
+            'less_than_sign',
             'siphon',
             'hash',
-            'close_tag'])
+            'greater_than_sign'])
         
         self.assertEqual(update('/*/jugfytgiuh/*/'), [
             ('multiline_comment', '/*/jugfytgiuh/*/')])
@@ -303,7 +303,7 @@ class LexerTest(unittest.TestCase):
             abstract capsule Capsule (of pointer to private LinkedListNode<T>)
         ''', [
             'identifier', 'identifier', 'identifier', 'open_paren', 'identifier',
-            'open_tag', 'identifier', 'close_tag'
+            'less_than_sign', 'identifier', 'greater_than_sign'
         ])
     
     

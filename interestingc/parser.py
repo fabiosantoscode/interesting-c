@@ -16,6 +16,12 @@ import lang.literals
 
 tokens = lexer.tokens
 
+precedence = (
+    ('left', 'plus_sign', 'minus_sign'),
+    ('left', 'times_sign', 'reverse_solidus'),
+    ('nonassoc', 'bang'),
+)
+
 def p_FinalExpression(p):
     '''FinalExpression : Expression
                        | NoExpression'''
@@ -47,7 +53,7 @@ def p_ExpressionEnclosedInParens(p):
 #unary
 def p_Not(p):
     '''Not : bang Expression'''
-    p[0] = lang.expressions.NotExpression(p[2])
+    p[0] = lang.expressions.Not(p[2])
 
 
 #binary
@@ -68,12 +74,12 @@ def p_Division(p):
     p[0] = lang.expressions.Division(p[1], p[3])
 
 def p_And(p):
-    '''And : Expression and_sign and_sign Expression'''
-    p[0] = lang.expressions.AndExpression(p[1], p[4])
+    '''And : Expression and_sign Expression'''
+    p[0] = lang.expressions.And(p[1], p[3])
 
 def p_Or(p):
-    '''Or : Expression pipe pipe Expression'''
-    p[0] = lang.expressions.OrExpression(p[1], p[4])
+    '''Or : Expression or_sign Expression'''
+    p[0] = lang.expressions.Or(p[1], p[3])
 
 def p_Comparison(p):
     '''Comparison : Expression ComparisonSign Expression'''
@@ -124,37 +130,6 @@ def parse_expression(s):
 class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
-    
-    def assert_expression_equal(self, interesting, c):
-        interesting = parse_expression(interesting).to_c()
-        self.assertEqual(interesting.replace(' ', ''),
-            c.replace(' ', ''))
-    
-    def test_everything(self):
-        print parse_expression('1').to_c()
-        # sum
-        print parse_expression('2+1').to_c()
-        print parse_expression('3+2+1').to_c()
-
-        print parse_expression('(1)').to_c()
-        print parse_expression('(2)+1').to_c()
-        print parse_expression('(3+2)+1').to_c()
-        print parse_expression('3+(2+1)').to_c()
-        
-        # mixing expressions
-        print parse_expression('3*2+1').to_c()
-        print parse_expression('3/2*1').to_c()
-
-        print parse_expression('(3*2)+1/2').to_c()
-        print parse_expression('3*(2+1)||1').to_c()
-        
-        # no expression
-        print parse_expression('').to_c()
-        
-        # bool expressions
-        print parse_expression('2&&1').to_c()
-        print parse_expression('1||2').to_c()
-        print parse_expression('!1').to_c()
     
     def test_ternary(self):
         tern = parse_expression('1?2:3').accept(lang.expressions.TernaryExpression)
@@ -207,9 +182,41 @@ class ParserTest(unittest.TestCase):
         self.assertTrue(isinstance(rr.right_operand, Literal))
         self.assertEqual(rr.left_operand.value, '3')
         self.assertEqual(rr.right_operand.value, '4')
+    
+    def test_precedence(self):
+        calculation = parse_expression('1*2+3')
+        #assert left side is expression, and thus is calculated first
+        self.assertIsInstance(calculation.left_operand, lang.expressions.Multiplication)
+        self.assertEqual(calculation.right_operand.value, '3')
         
-        self.assert_expression_equal('1<2<3<4', '1 < 2 && 2 < 3 && 3 < 4')
-
+        calculation = parse_expression('1+2*3')
+        #assert right side is expression, and thus is calculated first
+        self.assertIsInstance(calculation.right_operand, lang.expressions.Multiplication)
+        self.assertIsInstance(calculation.left_operand, lang.Literal)
+    
+    def test_precedence_with_parens(self):
+        calculation = parse_expression('(1*2)+3')
+        
+        #assert that parens make the left side an expression
+        self.assertIsInstance(calculation.right_operand, lang.Literal)
+        self.assertIsInstance(calculation.left_operand, lang.expressions.Multiplication)
+    
+    def test_noexpression(self):
+        noexp = parse_expression('')
+        self.assertIsInstance(noexp, lang.specialexpr.NoExpression)
+    
+    def test_bool_arithmetic(self):
+        or_ = parse_expression('1||1')
+        and_ = parse_expression('1&&1')
+        not_ = parse_expression('!1')
+        
+        self.assertIsInstance(or_, lang.expressions.Or)
+        self.assertIsInstance(and_, lang.expressions.And)
+        self.assertIsInstance(not_, lang.expressions.Not)
+    
+    def test_bool_arithmetic_precedence(self):
+        pass
+    
 if __name__ == '__main__':
     unittest.main()
 

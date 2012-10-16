@@ -38,6 +38,14 @@ class Expression(object):
 
 
 
+class Literal(Expression):
+    'A literal as an Expression in the parse tree.'
+    def __init__(self):
+        raise NotImplementedError('lang.expressions.Literal is not '
+            'meant to be used directly')
+
+
+
 #class Statement(object):
 #    '''
 #     - Yields nothing

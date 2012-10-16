@@ -1,10 +1,5 @@
 import lang
-
-class Literal(lang.Expression):
-    'A literal as an Expression in the parse tree.'
-    def __init__(self):
-        raise NotImplementedError('lang.expressions.Literal is not '
-            'meant to be used directly')
+from lang import Literal
 
 class _Literal(object):
     'Literal common functionality'
@@ -14,7 +9,7 @@ class _Literal(object):
     def __init__(self, value):
         self.value = value
 
-class _IntLiteral(_Literal):
+class _IntLiteral(_Literal, Literal):
     yield_type = 'int'
     
     def __int__(self):

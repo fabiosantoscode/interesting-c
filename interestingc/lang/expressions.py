@@ -44,13 +44,13 @@ class Division(_Binary, lang.Expression):
 class Multiplication(_Binary, lang.Expression):
     sign = '*'
 
-class NotExpression(_Unary, _BooleanExpression, lang.Expression):
+class Not(_Unary, _BooleanExpression, lang.Expression):
     sign = '!'
 
-class OrExpression(_Binary, _BooleanExpression, lang.Expression):
+class Or(_Binary, _BooleanExpression, lang.Expression):
     sign = '||'
 
-class AndExpression(_Binary, _BooleanExpression, lang.Expression):
+class And(_Binary, _BooleanExpression, lang.Expression):
     sign = '&&'
 
 class TernaryExpression(lang.Expression):

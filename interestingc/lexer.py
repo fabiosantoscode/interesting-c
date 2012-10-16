@@ -8,6 +8,12 @@ import unittest
 
 import ply.lex as lex
 
+reserved = {
+    'var': 'var',
+    'return': 'return',
+    'function': 'function',
+}
+
 tokens = [
     'whitespace',
     
@@ -36,6 +42,7 @@ tokens = [
     'solidus',
     'reverse_solidus',
     'pipe',
+    'or_sign',
     'semicolon',
     'comma',
     'colon',
@@ -44,6 +51,7 @@ tokens = [
     'bang',
     'question_mark',
     'and_sign',
+    'ampersand',
     'percent_sign',
     'siphon',
     
@@ -59,7 +67,7 @@ tokens = [
     'open_paren', 'close_paren',
     'open_brace', 'close_brace',
     'open_square', 'close_square',
-]
+] + list(reserved.values())
 
 def t_error(t):
     print 'error:', t
@@ -102,6 +110,7 @@ t_at_sign = r'@'
 t_solidus = r'\\'
 t_reverse_solidus = r'(/(?=[^/^*])|/$)'
 t_pipe = r'\|'
+t_or_sign = r'\|\|'
 t_semicolon = r';'
 t_comma = r','
 t_colon = r':'
@@ -109,7 +118,8 @@ t_dot = r'\.'
 t_hash = r'\#'
 t_bang = r'!'
 t_question_mark = r'\?'
-t_and_sign = r'&'
+t_and_sign = r'&&'
+t_ampersand = r'&'
 t_percent_sign = r'%'
 t_siphon = r'\$'
 
@@ -226,7 +236,7 @@ class LexerTest(unittest.TestCase):
             'reverse_solidus',
             'hash'])
         
-        self.assertEqual(update_and_get_names('&%<$#>'), [
+        self.assertEqual(update_and_get_names('&&%<$#>'), [
             'and_sign',
             'percent_sign',
             'less_than_sign',

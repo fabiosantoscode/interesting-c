@@ -37,6 +37,7 @@ def p_Expression(p):
                   | Division
                   | Sum
                   | Subtraction
+                  | Minus
                   | Comparison
                   | TernaryExpression'''
     p[0] = p[1].accept(lang.Expression)
@@ -55,6 +56,9 @@ def p_Not(p):
     '''Not : bang Expression'''
     p[0] = lang.expressions.Not(p[2])
 
+def p_Minus(p):
+    '''Minus : minus_sign Expression'''
+    p[0] = lang.expressions.Minus(p[2])
 
 #binary
 def p_Sum(p):
@@ -189,10 +193,15 @@ class ParserTest(unittest.TestCase):
         self.assertIsInstance(calculation.left_operand, lang.expressions.Multiplication)
         self.assertEqual(calculation.right_operand.value, '3')
         
-        calculation = parse_expression('1+2*3')
+        calculation = parse_expression('1-2/3')
         #assert right side is expression, and thus is calculated first
-        self.assertIsInstance(calculation.right_operand, lang.expressions.Multiplication)
+        self.assertIsInstance(calculation.right_operand, lang.expressions.Division)
         self.assertIsInstance(calculation.left_operand, lang.Literal)
+        
+    def test_unary_minus_precedence(self):
+        calculation = parse_expression('1*-1')
+        self.assertIsInstance(calculation.left_operand, lang.Literal)
+        self.assertIsInstance(calculation.right_operand, lang.expressions.Minus)
     
     def test_precedence_with_parens(self):
         calculation = parse_expression('(1*2)+3')
@@ -216,7 +225,6 @@ class ParserTest(unittest.TestCase):
     
     def test_bool_arithmetic_precedence(self):
         pass
-    
 if __name__ == '__main__':
     unittest.main()
 

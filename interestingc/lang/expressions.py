@@ -44,6 +44,9 @@ class Division(_Binary, lang.Expression):
 class Multiplication(_Binary, lang.Expression):
     sign = '*'
 
+class Minus(_Unary, lang.Expression):
+    sign = '-'
+
 class Not(_Unary, _BooleanExpression, lang.Expression):
     sign = '!'
 

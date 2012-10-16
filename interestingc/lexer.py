@@ -37,6 +37,7 @@ tokens = [
     'equal_sign',
     'plus_sign',
     'minus_sign',
+    'unary_minus',
     'times_sign',
     'at_sign',
     'solidus',
@@ -105,6 +106,7 @@ t_decimal_number_literal = r'[0-9]+'
 t_equal_sign = r'='
 t_plus_sign = r'\+'
 t_minus_sign = r'-'
+t_unary_minus = r'-'
 t_times_sign = r'\*'
 t_at_sign = r'@'
 t_solidus = r'\\'
@@ -221,7 +223,7 @@ class LexerTest(unittest.TestCase):
             ('octal_number_literal', '031')])
         
         self.assertEqual(update_and_get_names(
-                '{}()?;:.,!*+-/#'), [
+                '{}()?;:.,!*+/#'), [
             'open_brace', 'close_brace',
             'open_paren', 'close_paren',
             'question_mark',
@@ -232,7 +234,6 @@ class LexerTest(unittest.TestCase):
             'bang',
             'times_sign',
             'plus_sign',
-            'minus_sign',
             'reverse_solidus',
             'hash'])
         
@@ -291,11 +292,11 @@ class LexerTest(unittest.TestCase):
             ('at_sign', '@'),
             ('identifier', 'ntifier')])
         
-        self.assertEqual(update('id+nti0f-ier'), [
+        self.assertEqual(update('id+nti0f&ier'), [
             ('identifier','id'),
             ('plus_sign', '+'),
             ('identifier', 'nti0f'),
-            ('minus_sign', '-'),
+            ('ampersand', '&'),
             ('identifier', 'ier')])
     
     def test_complete_func(self):
@@ -305,7 +306,7 @@ class LexerTest(unittest.TestCase):
         }
         ''', [
             'identifier', 'identifier',
-            'open_paren', 'close_paren', 'open_brace', 'identifier', 
+            'open_paren', 'close_paren', 'open_brace', 'return', 
             'decimal_number_literal', 'semicolon', 'close_brace'])
     
     def test_complete_capsule(self):

@@ -5,6 +5,7 @@ Uses PLY (python-lex-yacc).
 '''
 
 import unittest
+import warnings
 
 import ply.yacc as yacc
 
@@ -17,9 +18,12 @@ import lang.literals
 tokens = lexer.tokens
 
 precedence = (
+    ('right', 'question_mark', 'colon'),
     ('left', 'plus_sign', 'minus_sign'),
     ('left', 'times_sign', 'reverse_solidus'),
+    ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),
+    ('nonassoc', 'unary_minus')
 )
 
 def p_FinalExpression(p):
@@ -224,7 +228,19 @@ class ParserTest(unittest.TestCase):
         self.assertIsInstance(not_, lang.expressions.Not)
     
     def test_bool_arithmetic_precedence(self):
-        pass
+        complex_ = parse_expression('1&&1||0')
+        self.assertIsInstance(complex_, lang.expressions.Or)
+        
+        complex_ = parse_expression('1||0&&1')
+        self.assertIsInstance(complex_, lang.expressions.And)
+        
+        complex_ = parse_expression('1&&(1||0)')
+        self.assertIsInstance(complex_, lang.expressions.And)
+        
+        complex_ = parse_expression('1||(0&&1)')
+        self.assertIsInstance(complex_, lang.expressions.Or)
+
+        
 if __name__ == '__main__':
     unittest.main()
 

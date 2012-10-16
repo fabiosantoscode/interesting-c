@@ -306,7 +306,7 @@ class LexerTest(unittest.TestCase):
         }
         ''', [
             'identifier', 'identifier',
-            'open_paren', 'close_paren', 'open_brace', 'return', 
+            'open_paren', 'close_paren', 'open_brace', 'identifier', 
             'decimal_number_literal', 'semicolon', 'close_brace'])
     
     def test_complete_capsule(self):

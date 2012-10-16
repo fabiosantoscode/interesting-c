@@ -23,7 +23,7 @@ precedence = (
     ('left', 'times_sign', 'reverse_solidus'),
     ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),
-    ('nonassoc', 'unary_minus')
+    ('nonassoc', 'unary_minus'),
 )
 
 def p_FinalExpression(p):

@@ -9,16 +9,14 @@
 #     - Has supers
 #    '''
 
-class Expression(object):
+from syntaxtree import SyntaxTreeNode
+
+class Expression(SyntaxTreeNode):
     '''
      - Yields a value of a certain type
      - Renderable
      - Can be a complex ad-hoc modifiable syntax tree.
     '''
-    
-    def __init__(self):
-        raise NotImplementedError('lang.Expression.__init__ must not'
-            ' be called directly')
     
     def get_yield_type(self):
         return self.yield_type
@@ -40,9 +38,6 @@ class Expression(object):
 
 class Literal(Expression):
     'A literal as an Expression in the parse tree.'
-    def __init__(self):
-        raise NotImplementedError('lang.expressions.Literal is not '
-            'meant to be used directly')
 
 
 

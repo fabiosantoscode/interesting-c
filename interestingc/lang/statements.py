@@ -32,8 +32,9 @@ class ContainerStatement(Statement):
     '''Abstracts an expression from other kinds of statements.'''
     def __init__(self, containee):
         self.containee = containee
-    def accept(self, *args, **kwargs):
-        return self.containee.accept(*args, **kwargs)
+    
+    def get_own_type(self):
+        return self.containee.__class__
     
     def to_c(self):
         return self.containee.to_c()

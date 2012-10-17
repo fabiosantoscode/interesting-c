@@ -13,13 +13,18 @@ from syntaxtree import SyntaxTreeNode
 
 class Expression(SyntaxTreeNode):
     '''
-     - Yields a value of a certain type
-     - Renderable
-     - Can be a complex ad-hoc modifiable syntax tree.
+        Yields a value of a certain type
+        There is a type of expression, which is its __class__.
+    get_own_type gets __class__, but it can be overridden to fake
+    other types and reduce complexity.
+        Renderable
     '''
     
     def get_yield_type(self):
         return self.yield_type
+    
+    def get_own_type(self):
+        return self.__class__
     
     def accept(self, expected, *ok_types):
         if not issubclass(self.__class__, expected):

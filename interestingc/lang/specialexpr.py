@@ -4,8 +4,7 @@ import lang
 
 class ExpressionEnclosedInParens(lang.Expression):
     'Encloses any Expression in parens.'
-    def __init__(self, containee):
-        self.containee = containee.accept(lang.Expression)
+    containee = property(lambda s: s.children[0])
     
     def accept(self, *args):
         return self.containee.accept(*args)
@@ -23,7 +22,7 @@ class NoExpression(lang.Expression):
     yield_type = ''
     
     def __init__(self):
-        pass
+        super(NoExpression, self).__init__([])
     
     def to_c(self):
         return u''

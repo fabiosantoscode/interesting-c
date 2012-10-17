@@ -52,7 +52,7 @@ def p_NoExpression(p):
 
 def p_ExpressionEnclosedInParens(p):
     '''ExpressionEnclosedInParens : open_paren Expression close_paren'''
-    p[0] = lang.specialexpr.ExpressionEnclosedInParens(p[2])
+    p[0] = lang.specialexpr.ExpressionEnclosedInParens([p[2]])
 
 
 #unary

@@ -20,15 +20,15 @@ tokens = lexer.tokens
 precedence = (
     ('right', 'question_mark', 'colon'),
     ('left', 'plus_sign', 'minus_sign'),
+    ('nonassoc', 'minus_sign'),
     ('left', 'times_sign', 'reverse_solidus'),
     ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),
-    ('nonassoc', 'unary_minus'),
 )
 
-def p_FinalExpression(p):
-    '''FinalExpression : Expression
-                       | NoExpression'''
+def p_OptionalExpression(p):
+    '''OptionalExpression : Expression
+                          | NoExpression'''
     p[0] = p[1].accept(lang.Expression)
 
 def p_Expression(p):
@@ -145,6 +145,8 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(tern.query.value, '1')
         self.assertEqual(tern.if_true.value, '2')
         self.assertEqual(tern.if_false.value, '3')
+        
+        self.assertIsInstance(parse_expression('1?2:3*1').if_false, lang.expressions.Multiplication)
     
     def test_cmp(self):
         cmp_ = parse_expression('1<2').accept(
@@ -202,10 +204,15 @@ class ParserTest(unittest.TestCase):
         self.assertIsInstance(calculation.right_operand, lang.expressions.Division)
         self.assertIsInstance(calculation.left_operand, lang.Literal)
         
-    def test_unary_minus_precedence(self):
-        calculation = parse_expression('1*-1')
+    def test_unary_minus(self):
+        calculation = parse_expression('1*-(1)')
         self.assertIsInstance(calculation.left_operand, lang.Literal)
         self.assertIsInstance(calculation.right_operand, lang.expressions.Minus)
+        calculation = parse_expression('1*-1')
+        self.assertIsInstance(calculation.right_operand, lang.expressions.Minus)
+        
+        self.assertIsInstance(parse_expression('-1'), lang.expressions.Minus)
+        
     
     def test_precedence_with_parens(self):
         calculation = parse_expression('(1*2)+3')

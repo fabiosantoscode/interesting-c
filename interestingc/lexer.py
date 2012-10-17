@@ -37,7 +37,6 @@ tokens = [
     'equal_sign',
     'plus_sign',
     'minus_sign',
-    'unary_minus',
     'times_sign',
     'at_sign',
     'solidus',
@@ -106,7 +105,6 @@ t_decimal_number_literal = r'[0-9]+'
 t_equal_sign = r'='
 t_plus_sign = r'\+'
 t_minus_sign = r'-'
-t_unary_minus = r'-'
 t_times_sign = r'\*'
 t_at_sign = r'@'
 t_solidus = r'\\'

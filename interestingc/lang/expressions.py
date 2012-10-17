@@ -60,8 +60,7 @@ class TernaryExpression(lang.Expression):
     def __init__(self, query, if_true, if_false):
         self.query = query
         self.if_true = if_true.accept(lang.Expression)
-        self.yield_type = self.if_true.get_yield_type()
-        self.if_false = if_false.accept(lang.Expression, self.yield_type)
+        self.if_false = if_false.accept(lang.Expression)
     
     def to_c(self):
         return (u'%s ? %s : %s' % self.query.to_c(), 

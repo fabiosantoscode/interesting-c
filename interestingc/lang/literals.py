@@ -1,21 +1,24 @@
 import lang
 from lang import Literal
 
-class _Literal(object):
+class _Literal(Literal):
     'Literal common functionality'
-    def to_c(self):
-        return self.c_value()
     
     def __init__(self, value):
-        self.value = value
+        super(_Literal, self).__init__(children=[], leaf=value)
+    
+    value = property(lambda s:s.leaf)
+    
+    def to_c(self):
+        return self.c_value()
 
-class _IntLiteral(_Literal, Literal):
+class _IntLiteral(_Literal):
     yield_type = 'int'
     
     def __int__(self):
         return int(self.value)
 
-class DecimalNumberLiteral(_IntLiteral, Literal):
+class DecimalNumberLiteral(_IntLiteral):
     def c_value(self):
         return str(int(self.value, 10))
 

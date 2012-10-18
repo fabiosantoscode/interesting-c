@@ -7,10 +7,10 @@ Uses PLY (python-lex-yacc).
 import ply.yacc as yacc
 
 import lexer
-import lang as basic
-import lang.expressions as expressions
-import lang.specialexpr as specialexpr
-import lang.literals as literals
+from syntaxtree import basic
+from syntaxtree import expressions
+from syntaxtree import specialexpr
+from syntaxtree import literals
 
 tokens = lexer.tokens
 

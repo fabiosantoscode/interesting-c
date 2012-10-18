@@ -1,16 +1,16 @@
 import unittest
-import lang
+from basic import Expression
 import specialexpr
 
 class _BooleanExpression(object):
     yield_type = 'bool'
 
-class _Binary(lang.Expression):
+class _Binary(Expression):
     def __init__(self, left, right, sign=None):
-        'left, right : lang.Expression'
+        'left, right : Expression'
         assert self.__class__ != _Binary
-        left = left.accept(lang.Expression)
-        right = right.accept(lang.Expression)
+        left = left.accept(Expression)
+        right = right.accept(Expression)
         sign = sign or self.sign
         super(_Binary, self).__init__([left, right], sign)
     
@@ -22,12 +22,12 @@ class _Binary(lang.Expression):
         return u'%s %s %s' % (self.left_operand.to_c(), self.sign,
             self.right_operand.to_c())
 
-class _Unary(lang.Expression):
+class _Unary(Expression):
     needs_parens = False
     
     def __init__(self, operand, sign=None):
         assert self.__class__ != _Unary
-        operand = operand.accept(lang.Expression)
+        operand = operand.accept(Expression)
         sign = sign or self.sign
         super(_Unary, self).__init__([operand], sign)
     
@@ -40,35 +40,35 @@ class _Unary(lang.Expression):
 
 
 
-class Sum(_Binary, lang.Expression):
+class Sum(_Binary, Expression):
     sign = '+'
 
-class Subtraction(_Binary, lang.Expression):
+class Subtraction(_Binary, Expression):
     sign = '-'
 
-class Division(_Binary, lang.Expression):
+class Division(_Binary, Expression):
     sign = '/'
 
-class Multiplication(_Binary, lang.Expression):
+class Multiplication(_Binary, Expression):
     sign = '*'
 
-class Minus(_Unary, lang.Expression):
+class Minus(_Unary, Expression):
     sign = '-'
 
-class Not(_Unary, _BooleanExpression, lang.Expression):
+class Not(_Unary, _BooleanExpression, Expression):
     sign = '!'
 
-class Or(_Binary, _BooleanExpression, lang.Expression):
+class Or(_Binary, _BooleanExpression, Expression):
     sign = '||'
 
-class And(_Binary, _BooleanExpression, lang.Expression):
+class And(_Binary, _BooleanExpression, Expression):
     sign = '&&'
 
-class TernaryExpression(lang.Expression):
+class TernaryExpression(Expression):
     def __init__(self, query, if_true, if_false):
         query = query
-        if_true = if_true.accept(lang.Expression)
-        if_false = if_false.accept(lang.Expression)
+        if_true = if_true.accept(Expression)
+        if_false = if_false.accept(Expression)
         super(TernaryExpression, self).__init__([query, if_true, if_false])
     
     query = property(lambda s: s.children[0])
@@ -76,12 +76,12 @@ class TernaryExpression(lang.Expression):
     if_false = property(lambda s: s.children[2])
     
     def to_c(self):
-        children_c = map(lang.Expression.to_c, self.children)
+        children_c = map(Expression.to_c, self.children)
         return (u'%s ? %s : %s' % children_c)
 
 
 
-class Comparison(_Binary, lang.Expression):
+class Comparison(_Binary, Expression):
     'Comparison expressions like <, >= and =='
     yield_type = 'bool'
     signs = ['<', '>', '<=', '>=', '==', '!=']

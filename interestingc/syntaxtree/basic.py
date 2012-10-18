@@ -1,5 +1,5 @@
 
-from syntaxtree import SyntaxTreeNode
+from tree import SyntaxTreeNode
 
 #class Module(object):
 

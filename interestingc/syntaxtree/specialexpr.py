@@ -1,8 +1,7 @@
-import lang
+from basic import Expression
 
 
-
-class ExpressionEnclosedInParens(lang.Expression):
+class ExpressionEnclosedInParens(Expression):
     'Encloses any Expression in parens.'
     containee = property(lambda s: s.children[0])
     
@@ -17,7 +16,7 @@ class ExpressionEnclosedInParens(lang.Expression):
 
 
 
-class NoExpression(lang.Expression):
+class NoExpression(Expression):
     'No expression at all'
     yield_type = ''
     

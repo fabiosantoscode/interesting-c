@@ -1,6 +1,6 @@
 import unittest
 
-from lexer import update_and_get_names, update
+from parse.lexer import update_and_get_names, update
 
 class LexerTest(unittest.TestCase):
     def setUp(self):

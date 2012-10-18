@@ -1,7 +1,7 @@
 import unittest
 
-from lang import Expression, WrapperExpression
-from syntaxtree import SyntaxTreeNode
+from syntaxtree.basic import Expression, WrapperExpression
+from syntaxtree.tree import SyntaxTreeNode
 
 
 

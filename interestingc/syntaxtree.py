@@ -1,5 +1,4 @@
 
-import unittest
 
 
 
@@ -27,24 +26,4 @@ class SyntaxTreeNode(object):
     def add_child(self, child):
         self.down.append(child)
 
-
-
-class SyntaxTreeNodeTest(unittest.TestCase):
-    def setUp(self):
-        self.testtree = SyntaxTreeNode([
-            SyntaxTreeNode([], 'child1'),
-            SyntaxTreeNode([], 'child2'),
-            SyntaxTreeNode([
-                SyntaxTreeNode([], 'grandchild'),
-            ], 'child3'),
-        ], 'root')
-    
-    def test_iter(self):
-        expectations = ['child1', 'child2', 'child3']
-        reality = [child.leaf for child in self.testtree]
-        self.assertEqual(expectations, reality)
-    
-
-if __name__ == '__main__':
-    unittest.main()
 

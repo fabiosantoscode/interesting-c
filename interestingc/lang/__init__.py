@@ -1,5 +1,4 @@
 
-import unittest
 from syntaxtree import SyntaxTreeNode
 
 #class Module(object):
@@ -75,35 +74,4 @@ class Literal(Expression):
 #     - Renderable
 #     - Contains expressions
 #    '''
-
-class TestLang(unittest.TestCase):
-    class Expr(Expression):
-        yield_type = 'int'
-    
-    class Expr2(Expression):
-        yield_type = 'int'
-    
-    def test_expression(self):
-        'test yield type, expr type and accept'
-        expr = TestLang.Expr()
-        self.assertEqual(expr.get_yield_type(), 'int')
-        self.assertEqual(expr.get_own_type(), TestLang.Expr)
-        self.assertEqual(expr.accept(TestLang), expr)
-        self.assertRaises(lambda:expr.accept(Expr2), Exception)
-    
-    def test_wrapper_expression(self):
-        class Wrapper(WrapperExpression):
-            acceptable_type = TestLang.Expr
-        
-        wrap = TestLang.Wrapper(TestLang.Expr)
-        self.assertEqual(wrap.get_yield_type(), 'int')
-        self.assertEqual(wrap.accept(TestLang.Expr), wrap.leaf)
-        self.assertRaises(lambda:wrap.accept(Expr2), Exception)
-        
-        def try_wrap_something_else():
-            TestLang.Wrapper(TestLang.Expr2)
-        self.assertRaises(try_wrap_something_else, Exception)
-
-if __name__ == '__main__':
-    unittest.main()
 

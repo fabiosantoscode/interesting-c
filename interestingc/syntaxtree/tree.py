@@ -14,7 +14,7 @@ class SyntaxTreeNode(object):
         self.leaf = leaf
     
     def integrate_children(self):
-        for child in self.children:
+        for child in self:
             child.parent = self
     
     def accept(self, expected):
@@ -27,7 +27,7 @@ class SyntaxTreeNode(object):
         return iter(self.children)
     
     def add_child(self, child):
-        self.down.append(child)
+        self.children.append(child)
         child.parent = self
     
     def to_c(self):

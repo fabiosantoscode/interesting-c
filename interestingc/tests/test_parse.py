@@ -72,10 +72,11 @@ class ParserTest(unittest.TestCase):
         self.assertIsInstance(calculation.left_operand, expressions.Multiplication)
         self.assertEqual(calculation.right_operand.value, '3')
         
-        calculation = parse_expression('1-2/3')
+        calc = parse_expression('1-2/3')
         #assert right side is expression, and thus is calculated first
-        self.assertIsInstance(calculation.right_operand, expressions.Division)
-        self.assertIsInstance(calculation.left_operand, Literal)
+        self.assertIsInstance(calc, expressions.Subtraction)
+        self.assertIsInstance(calc.right_operand, expressions.Division)
+        self.assertIsInstance(calc.left_operand, Literal)
         
     def test_unary_minus(self):
         calculation = parse_expression('1*-(1)')

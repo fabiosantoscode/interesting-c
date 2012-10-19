@@ -17,7 +17,6 @@ tokens = lexer.tokens
 precedence = (
     ('right', 'question_mark', 'colon'),
     ('left', 'plus_sign', 'minus_sign'),
-    ('nonassoc', 'minus_sign'),
     ('left', 'times_sign', 'reverse_solidus'),
     ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),

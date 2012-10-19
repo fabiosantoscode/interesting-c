@@ -15,15 +15,22 @@ class SyntaxTreeNode(object):
     
     def integrate_children(self):
         for child in self.children:
-            child.set_parent(self)
+            child.parent = self
     
-    def set_parent(self, parent):
-        self.parent = parent
+    def accept(self, expected):
+        if not issubclass(self.__class__, expected):
+            raise Exception('Expected %s, instead found %s'
+                % (expected, self.__class__.__name__))
+        return self
     
     def __iter__(self):
         return iter(self.children)
     
     def add_child(self, child):
         self.down.append(child)
+        child.parent = self
+    
+    def to_c(self):
+        raise NotImplementedError
 
 

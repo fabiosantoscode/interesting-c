@@ -8,7 +8,8 @@ from tree import SyntaxTreeNode
 #class Object(object):
 #    '''
 #     - Exists
-#     - Has supers
+#     - Has supers (or not)
+#     - Has attributes, as struct members
 #    '''
 
 class Expression(SyntaxTreeNode):
@@ -18,6 +19,7 @@ class Expression(SyntaxTreeNode):
     get_own_type gets __class__, but it can be overridden to fake
     other types and make some expressions transparent.
         Renderable
+        May have side effects
     '''
     
     def get_yield_type(self):
@@ -25,17 +27,6 @@ class Expression(SyntaxTreeNode):
     
     def get_own_type(self):
         return self.__class__
-    
-    def accept(self, expected, *ok_types):
-        # TODO deprecate ok_types
-        if not issubclass(self.__class__, expected):
-            raise Exception('Expected %s, instead found %s'
-                % (expected, self.__class__.__name__))
-        if ok_types:
-            if not self.get_yield_type() in ok_types:
-                raise Exception('Expected %s' % (', or '.join(
-                    ok_types)))
-        return self
     
     def to_c(self):
         raise NotImplementedError
@@ -68,10 +59,12 @@ class Literal(Expression):
 
 
 
-#class Statement(object):
-#    '''
-#     - Yields nothing
-#     - Renderable
-#     - Contains expressions
-#    '''
+class Statement(object):
+    '''
+     - Yields nothing, but almost always has side effects.
+     - Renderable
+     - Contains expressions
+    '''
+    
+    
 

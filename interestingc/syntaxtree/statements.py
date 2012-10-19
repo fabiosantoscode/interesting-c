@@ -1,23 +1,5 @@
-import unittest
-import lang
 import expressions
-from collections import namedtuple
-
-
-
-class Statement(object):
-    '''
-     - Yields nothing
-     - Renderable
-     - Contains expressions
-    '''
-    
-    def to_c(self):
-        raise NotImplementedError
-    
-    def __init__():
-        raise NotImplementedError('lang.Statement must not be '
-            'initialized directly')
+from basic import Statement
 
 
 

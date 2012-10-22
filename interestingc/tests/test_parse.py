@@ -12,6 +12,15 @@ class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
     
+    def test_variable_declaration(self):
+        decl = parse_statement('int a').accept(statements.Declaration)
+        assdecl = parse_statement('int a=3').accept(statements.Declaration)
+        self.assertEqual(decl.identifier.name, 'a')
+        self.assertEqual(decl.type_.name, 'int')
+        self.assertEqual(assdecl.identifier.name, 'a')
+        self.assertEqual(assdecl.type_.name, 'int')
+        self.assertEqual(assdecl.expression.value, '3')
+    
     def test_assignment(self):
         ass = parse_statement('a=3').accept(statements.Assignment)
         self.assertEqual(ass.assignee.name, 'a')

@@ -14,12 +14,23 @@ class Assignment(Statement):
 
 
 class Declaration(Statement):
-    def __init__(self, type_, identifier):
+    def __init__(self, type_, identifier, expression=None):
         identifier = identifier.accept(Identifier)
-        super(Declaration, self).__init__([identifier], type_)
+        if expression is None:
+            children = [identifier]
+        else:
+            assignment = Assignment(identifier, expression)
+            children = [identifier, assignment]
+        leaf = type_.accept(Identifier)
+        super(Declaration, self).__init__(children, leaf)
     
     type_ = property(lambda self:self.leaf)
     identifier = property(lambda self: self.children[0])
+    expression = property(lambda self: self.children[1].expression)
+    
+    def is_assignment(self):
+        return len(self.children) == 2
+
 
 
 class ExpressionStatement(Statement):

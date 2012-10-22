@@ -27,7 +27,8 @@ precedence = (
 def p_Statement(p):
     '''Statement : ExpressionStatement
                  | EmptyStatement
-                 | Assignment'''
+                 | Assignment
+                 | Declaration'''
     p[0] = p[1].accept(basic.Statement)
 
 def p_EmptyStatement(p):
@@ -37,6 +38,17 @@ def p_EmptyStatement(p):
 def p_ExpressionStatement(p):
     '''ExpressionStatement : Expression'''
     p[0] = statements.ExpressionStatement(p[1])
+
+def p_Declaration(p):
+    '''Declaration : Identifier whitespace Identifier
+                   | Identifier whitespace Identifier equal_sign Expression'''
+    type_ = p[1]
+    ident = p[3]
+    
+    if len(p) == 4:
+        p[0] = statements.Declaration(type_, ident)
+    elif len(p) == 6:
+        p[0] = statements.Declaration(type_, ident, p[5])
 
 def p_Assignment(p):
     '''Assignment : Identifier equal_sign Expression'''

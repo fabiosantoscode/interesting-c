@@ -1,7 +1,7 @@
 import unittest
 from syntaxtree import basic, statements, expressions, literals
 
-class TestStatements(unittest.TestCase):
+class StatementTest(unittest.TestCase):
     def test_expression_statement(self):
         expr = basic.Expression()
         exprstatement = statements.ExpressionStatement(expr)

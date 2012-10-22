@@ -59,7 +59,7 @@ class Literal(Expression):
 
 
 
-class Statement(object):
+class Statement(SyntaxTreeNode):
     '''
      - Yields nothing, but almost always has side effects.
      - Renderable
@@ -67,4 +67,12 @@ class Statement(object):
     '''
     
     
-
+class Identifier(Expression):
+    '''
+     - An identifier identifies a variable, and exists in a scope.
+    '''
+    def __init__(self, name):
+        super(Identifier, self).__init__([], name)
+    
+    name = property(lambda self: self.leaf)
+    

@@ -9,6 +9,7 @@ import ply.yacc as yacc
 import lexer
 from syntaxtree import basic
 from syntaxtree import expressions
+from syntaxtree import statements
 from syntaxtree import specialexpr
 from syntaxtree import literals
 
@@ -21,6 +22,25 @@ precedence = (
     ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),
 )
+
+
+def p_Statement(p):
+    '''Statement : ExpressionStatement
+                 | EmptyStatement
+                 | Assignment'''
+    p[0] = p[1].accept(basic.Statement)
+
+def p_EmptyStatement(p):
+    '''EmptyStatement : '''
+    p[0] = statements.EmptyStatement()
+
+def p_ExpressionStatement(p):
+    '''ExpressionStatement : Expression'''
+    p[0] = statements.ExpressionStatement(p[1])
+
+def p_Assignment(p):
+    '''Assignment : Identifier equal_sign Expression'''
+    p[0] = statements.Assignment(p[1], p[3])
 
 def p_OptionalExpression(p):
     '''OptionalExpression : Expression
@@ -117,7 +137,8 @@ def p_Term(p):
 
 def p_Identifier(p):
     '''Identifier : identifier'''
-    p[0] = expressions.Identifier(p[1], p.parser.current_module)
+    # p[0] = basic.Identifier(p[1], p.parser.current_module)
+    p[0] = basic.Identifier(p[1])
 
 def p_DecimalNumberLiteral(p):
     '''DecimalNumberLiteral : decimal_number_literal '''
@@ -128,6 +149,8 @@ yacc.yacc()
 
 
 def parse_expression(s):
-    return yacc.parse(s).accept(basic.Expression)
+    return yacc.parse(s).containee.accept(basic.Expression)
 
+def parse_statement(s):
+    return yacc.parse(s).accept(basic.Statement)
 

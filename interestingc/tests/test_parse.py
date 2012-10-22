@@ -1,15 +1,21 @@
 import unittest
 
-from parse.parse import parse_expression
+from parse.parse import parse_expression, parse_statement
 from syntaxtree.basic import Literal
 from syntaxtree import expressions
 from syntaxtree import specialexpr
+from syntaxtree import statements
 
 
 
 class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
+    
+    def test_assignment(self):
+        ass = parse_statement('a=3').accept(statements.Assignment)
+        self.assertEqual(ass.assignee.name, 'a')
+        self.assertEqual(ass.expression.value, '3')
     
     def test_ternary(self):
         tern = parse_expression('1?2:3').accept(
@@ -20,7 +26,7 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(tern.if_false.value, '3')
         
         self.assertIsInstance(parse_expression('1?2:3*1').if_false,
-        expressions.Multiplication)
+            expressions.Multiplication)
     
     def test_cmp(self):
         cmp_ = parse_expression('1<2').accept(
@@ -50,8 +56,7 @@ class ParserTest(unittest.TestCase):
             expressions.Comparison)
         
         self.assertTrue(isinstance(chain.left_operand, Literal))
-        self.assertFalse(isinstance(chain.right_operand, Literal)
-            )
+        self.assertFalse(isinstance(chain.right_operand, Literal))
         
         r = chain.right_operand
         
@@ -87,7 +92,6 @@ class ParserTest(unittest.TestCase):
         
         self.assertIsInstance(parse_expression('-1'),
              expressions.Minus)
-        
     
     def test_precedence_with_parens(self):
         calculation = parse_expression('(1*2)+3')

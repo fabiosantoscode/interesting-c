@@ -13,6 +13,15 @@ class Assignment(Statement):
 
 
 
+class Declaration(Statement):
+    def __init__(self, type_, identifier):
+        identifier = identifier.accept(Identifier)
+        super(Declaration, self).__init__([identifier], type_)
+    
+    type_ = property(lambda self:self.leaf)
+    identifier = property(lambda self: self.children[0])
+
+
 class ExpressionStatement(Statement):
     '''Statement which is a lone expression'''
     def __init__(self, containee):

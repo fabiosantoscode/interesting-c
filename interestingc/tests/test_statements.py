@@ -16,3 +16,10 @@ class TestStatements(unittest.TestCase):
         expr = literals.DecimalNumberLiteral('45')
         assignment = statements.Assignment(expression=expr, 
             assignee=ident)
+    
+    def test_declaration(self):
+        ident = basic.Identifier('b')
+        type_ = 'int'
+        decl = statements.Declaration(type_, ident)
+        self.assertEqual(decl.type_, 'int')
+        self.assertEqual(decl.identifier.name, 'b')

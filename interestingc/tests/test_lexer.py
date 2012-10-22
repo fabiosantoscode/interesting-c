@@ -34,6 +34,20 @@ class LexerTest(unittest.TestCase):
         
         self.fail('Error: %s.\nTokens found:   %s\nTokens missing: %s\n' % (repr(err), repr(matched_tokens), repr(missing_tokens)))
         
+    def test_string(self):
+        self.assertEqual(update('"s"     "asd"'), [
+            ('string_literal', '"s"'),
+            ('string_literal', '"asd"')])
+        
+        heavily_escaped_string = r'" pls. allow: \"\\\" \\"'
+        self.assertEqual(update(heavily_escaped_string), [
+            ('string_literal', heavily_escaped_string)])
+        
+        corner1 = '""""'
+        self.assertEqual(update(corner1), [
+            ('string_literal', '""'),
+            ('string_literal', '""')])
+    
     def test_whitespace_behavior(self):
         common_result = [('decimal_number_literal', '3')]
         self.assertEqual(update('3     \n    \t'), common_result)

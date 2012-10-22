@@ -35,9 +35,10 @@ class LexerTest(unittest.TestCase):
         self.fail('Error: %s.\nTokens found:   %s\nTokens missing: %s\n' % (repr(err), repr(matched_tokens), repr(missing_tokens)))
         
     def test_whitespace_behavior(self):
-        self.assertEqual(update('3     \n    \t'), ['3'])
-        self.assertEqual(update('  \n\t \n3\t  '), ['3'])
-        self.assertEqual(update('  \n  \t \n  3'), ['3'])
+        common_result = [('decimal_number_literal', '3')]
+        self.assertEqual(update('3     \n    \t'), common_result)
+        self.assertEqual(update('  \n\t \n3\t  '), common_result)
+        self.assertEqual(update('  \n  \t \n  3'), common_result)
     
     def test_everything(self):
         lesslist = []
@@ -103,20 +104,12 @@ class LexerTest(unittest.TestCase):
         '''
     
         self.assertEqual(update_and_get_names(s), [
-            'whitespace',
             'singleline_comment',
-            'whitespace',
             'identifier',
-            'whitespace',
             'identifier',
-            'whitespace',
-            'singleline_comment',
-            'whitespace'])
+            'singleline_comment'])
         
-        self.assertEqual(update_and_get_names(' @ '), [
-            'whitespace',
-            'at_sign',
-            'whitespace'])
+        self.assertEqual(update_and_get_names(' @ '), ['at_sign'])
     
     def test_cut_identifiers(self):
         self.assertEqual(update('id@ntifier'), [

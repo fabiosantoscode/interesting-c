@@ -2,13 +2,15 @@
 Lexer for interesting-c.
 Uses PLY (python-lex-yacc).
 
-The philosophy is to preserve whitespace the best possible, as well as the entire code appearance. C allows for weird syntax and that is beautiful. Also, interesting-c doesn't need to know of any preprocessor tricks.
+The philosophy is to preserve whitespace the best possible, to avoid
+altering the overall code appearance. C allows for weird syntax and
+that is beautiful. Also, interesting-c doesn't need to know of any
+preprocessor tricks.
 '''
 
 import ply.lex as lex
 
 reserved = {
-    'var': 'var',
     'return': 'return',
     'function': 'function',
 }
@@ -76,8 +78,6 @@ def t_whitespace(t):
     t.is_newline = '\n' in t.value
     return t
 
-#t_whitespace = r'[ \t\n]+'
-# missing: 'multiline_comment', 'singleline_comment'
 t_singleline_comment = r'//.*'
 t_multiline_comment = r'/\*.*?\*/'
 t_identifier = r'[_a-zA-Z][_a-zA-Z0-9]*'

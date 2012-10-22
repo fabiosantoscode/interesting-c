@@ -13,7 +13,7 @@ Purpose of interesting-c
 
 The purpose of the interesting-c language is to create a new language on top of C. This language will be able to use C's strengths together with modern languages' strengths, as well as surpass many of C's weaknesses. The syntax will be closely resemblant to C, but the language will attempt to discourage usage of odd C constructs as much as it can, avoiding programmer errors whenever possible.
 
-One could mention the C++ language as a project already implementing the functionality expressed here in this document. However, C++ is far different from this. While C++ extends C and adds to it (every C++ program is a C program too), interesting-c is a juiced-up subset of C which compiles to pure C code. The interesting-c “compiler” is nothing more than a translator leveraging the standard C language to create fast programs which are easier to read and write than C or C++.
+One could mention the C++ language as a project already implementing the functionality described in this document. However, C++ is far different from this. While C++ has its own compiler, interesting-c does not. The interesting-c “compiler” does nothing more than text transformation, leveraging the standard C language to enable the developer to build fast programs which are easier to read and write than C or C++.
 
 One of the main advantages of the language is the definition of a C interface. While it can create executables, it can also create shared libraries, automatically implementing a C interface.
 
@@ -26,7 +26,7 @@ The first one, is to make a language derivative of C which is much easier to pro
 
 The second idea behind interesting-c is to ease metaprogramming. By introducing a pre-compilation step and giving access to pre-compile-time data to the runtime code, and allowing the programmer to intervene in this pre-compilation step, advanced reflection becomes available to extremely fast code.
 
-For example, it is easier to expose a XML-RPC API if you have the access to all subclasses (or implementers), methods and their names, as well as argument names and types for every method. More can be done using this information, for instance, JSON serialization (any kind of serialization, for that matter), ORM systems, etc. 
+For example, it is easier to expose a XML-RPC API if you have the access to all subclasses of a certain type (or implementers of a certain interface), methods and names of methods in a module or type, as well as argument names and types for every method. More can be done using this information, for instance, JSON serialization (any kind of serialization, for that matter), ORM systems, etc. 
 
 Roadmap
 -------

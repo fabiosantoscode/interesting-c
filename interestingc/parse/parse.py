@@ -40,15 +40,15 @@ def p_ExpressionStatement(p):
     p[0] = statements.ExpressionStatement(p[1])
 
 def p_Declaration(p):
-    '''Declaration : Identifier whitespace Identifier
-                   | Identifier whitespace Identifier equal_sign Expression'''
+    '''Declaration : Identifier Identifier
+                   | Identifier Identifier equal_sign Expression'''
     type_ = p[1]
-    ident = p[3]
+    ident = p[2]
     
-    if len(p) == 4:
+    if len(p) == 3:
         p[0] = statements.Declaration(type_, ident)
-    elif len(p) == 6:
-        p[0] = statements.Declaration(type_, ident, p[5])
+    elif len(p) == 5:
+        p[0] = statements.Declaration(type_, ident, p[4])
 
 def p_Assignment(p):
     '''Assignment : Identifier equal_sign Expression'''

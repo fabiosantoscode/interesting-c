@@ -1,6 +1,6 @@
 import unittest
 
-from parse.lexer import update_and_get_names, update
+from parse.lexer import lex, update_and_get_names, update
 
 class LexerTest(unittest.TestCase):
     def setUp(self):
@@ -34,21 +34,22 @@ class LexerTest(unittest.TestCase):
         
         self.fail('Error: %s.\nTokens found:   %s\nTokens missing: %s\n' % (repr(err), repr(matched_tokens), repr(missing_tokens)))
         
+    def test_whitespace_behavior(self):
+        self.assertEqual(update('3     \n    \t'), ['3'])
+        self.assertEqual(update('  \n\t \n3\t  '), ['3'])
+        self.assertEqual(update('  \n  \t \n  3'), ['3'])
+    
     def test_everything(self):
         lesslist = []
         
-        self.assertTrue(update('     \n    \t'))
-        
         self.assertEqual(update('int a=3'), [
             ('identifier', 'int'),
-            ('whitespace', ' '),
             ('identifier', 'a'),
             ('equal_sign', '='),
             ('decimal_number_literal', '3')])
         
         self.assertEqual(update('int a=031'), [
             ('identifier', 'int'),
-            ('whitespace', ' '),
             ('identifier', 'a'),
             ('equal_sign', '='),
             ('octal_number_literal', '031')])

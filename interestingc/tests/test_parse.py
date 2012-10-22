@@ -11,6 +11,16 @@ from syntaxtree import statements
 class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
+
+    def test_tolerate_whitespace(self):
+        s1 = parse_statement('int a = 3')
+        self.assertIsInstance(s1, statements.Declaration)
+        s2 = parse_statement('b =    \n\t6\r')
+        self.assertIsInstance(s2, statements.Assignment)
+        e1 = parse_expression('a   +      5     +     9')
+        self.assertIsInstance(e1, expressions.Sum)
+        e2 = parse_expression('-   4')
+        self.assertIsInstance(e2, expressions.Minus)
     
     def test_variable_declaration(self):
         decl = parse_statement('int a').accept(statements.Declaration)

@@ -74,9 +74,9 @@ def t_error(t):
     print 'error:', t
 
 def t_whitespace(t):
-    r'[ \t\n]+'
+    r'[ \t\n\r]+'
     t.is_newline = '\n' in t.value
-    return t
+    return None
 
 t_singleline_comment = r'//.*'
 t_multiline_comment = r'/\*.*?\*/'

@@ -12,21 +12,22 @@ class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
     
-#    def test_namespaces(self):
-#        'test namespace references in identifiers and assignments'
-#        expr1 = parse_expression('e')
-#        self.assertIsInstance(expr1, Identifier)
-#        self.assertIsInstance(expr1.namespace, Namespace)
-#        stmt1 = parse_statement('int a')
-#        self.assertIsInstance(stmt1.namespace, Namespace)
+    def test_namespaces(self):
+        raise unittest.SkipTest #TODO
+        'test namespace references in identifiers and assignments'
+        expr1 = parse_expression('e')
+        self.assertIsInstance(expr1, Identifier)
+        self.assertIsInstance(expr1.namespace, Namespace)
+        stmt1 = parse_statement('int a')
+        self.assertIsInstance(stmt1.namespace, Namespace)
     
     def test_noexpression(self):
-        raise unittest.SkipTest
+        raise unittest.SkipTest #TODO
         noexp = parse_expression('')
         self.assertIsInstance(noexp, specialexpr.NoExpression)
     
     def test_empty_statement(self):
-        raise unittest.SkipTest
+        raise unittest.SkipTest #TODO
         nostmt = parse_statement('')
         self.assertIsInstance(nostmt, statements.EmptyStatement)
     

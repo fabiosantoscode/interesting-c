@@ -189,5 +189,8 @@ def parse_statement(s):
 def parse_expression(s):
     statement = parse_statement(s)
     if isinstance(statement, statements.EmptyStatement):
-        return statement
-    return statement.accept(statements.ExpressionStatement).containee
+        return specialexpr.NoExpression()
+    else:
+        return statement.accept(statements.ExpressionStatement
+            ).containee
+

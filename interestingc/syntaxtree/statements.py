@@ -47,9 +47,8 @@ class ExpressionStatement(Statement):
 
 class EmptyStatement(Statement):
     ';'
-    @property
-    def containee(self):
-        return specialexpr.NoExpression()
+    def __init__(self):
+        super(EmptyStatement, self).__init__([], 'Empty')
 
 
 

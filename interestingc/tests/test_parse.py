@@ -5,13 +5,13 @@ from syntaxtree.basic import Literal
 from syntaxtree import expressions
 from syntaxtree import specialexpr
 from syntaxtree import statements
-
+from syntaxtree.namespaces import Namespace
 
 
 class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
-
+    
     def test_tolerate_whitespace(self):
         s1 = parse_statement('int a = 3')
         self.assertIsInstance(s1, statements.Declaration)
@@ -146,6 +146,3 @@ class ParserTest(unittest.TestCase):
         self.assertIsInstance(complex_, expressions.Or)
 
 
-
-if __name__ == '__main__':
-    unittest.main()

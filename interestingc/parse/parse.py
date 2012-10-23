@@ -83,7 +83,7 @@ def p_ExpressionEnclosedInParens(p):
     p[0] = specialexpr.ExpressionEnclosedInParens([p[2]])
 
 
-#unary
+# unary
 def p_Not(p):
     '''Not : bang Expression'''
     p[0] = expressions.Not(p[2])
@@ -92,7 +92,7 @@ def p_Minus(p):
     '''Minus : minus_sign Expression'''
     p[0] = expressions.Minus(p[2])
 
-#binary
+# binary
 def p_Sum(p):
     '''Sum : Expression plus_sign Expression'''
     p[0] = expressions.Sum(p[1], p[3])
@@ -119,6 +119,7 @@ def p_Or(p):
 
 def p_Comparison(p):
     '''Comparison : Expression ComparisonSign Expression'''
+    # actually a n-ary expression but binary from the parser's view
     p[0] = expressions.Comparison(p[1], p[3], sign=p[2])
 
 def p_ComparisonSign(p):
@@ -131,17 +132,22 @@ def p_ComparisonSign(p):
     p[0] = ''.join(p[1:][:2])
     
 
-#ternary
+# the ternary
 def p_TernaryExpression(p):
     '''TernaryExpression : Expression question_mark Expression colon Expression'''
     p[0] = expressions.TernaryExpression(p[1], p[3], p[5])
 
 
-#literals
+# literals
 def p_Literal(p):
     '''Literal : DecimalNumberLiteral '''
     p[0] = p[1].accept(literals.Literal)
 
+def p_DecimalNumberLiteral(p):
+    '''DecimalNumberLiteral : decimal_number_literal '''
+    p[0] = literals.DecimalNumberLiteral(value=p[1])
+
+# values
 def p_Term(p):
     '''Term : Literal
             | Identifier'''
@@ -149,12 +155,8 @@ def p_Term(p):
 
 def p_Identifier(p):
     '''Identifier : identifier'''
-    # p[0] = basic.Identifier(p[1], p.parser.current_module)
+    # p[0] = basic.Identifier(p[1], p.parser.current_namespace)
     p[0] = basic.Identifier(p[1])
-
-def p_DecimalNumberLiteral(p):
-    '''DecimalNumberLiteral : decimal_number_literal '''
-    p[0] = literals.DecimalNumberLiteral(value=p[1])
 
 yacc.yacc()
 

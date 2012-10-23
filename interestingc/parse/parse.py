@@ -12,6 +12,7 @@ from syntaxtree import expressions
 from syntaxtree import statements
 from syntaxtree import specialexpr
 from syntaxtree import literals
+from syntaxtree import namespaces
 
 tokens = lexer.tokens
 
@@ -23,6 +24,22 @@ precedence = (
     ('nonassoc', 'bang'),
 )
 
+def p_CodeBlock(p):
+    '''CodeBlock : open_brace StatementList close_brace'''
+    # p[0] = namespaces.CodeBlock(p[2], p.parser.current_namespace)
+    p[0] = namespaces.CodeBlock(p[2])
+
+def p_StatementList(p):
+    '''StatementList : Statement
+                     | Statement semicolon
+                     | Statement semicolon StatementList'''
+    if len(p) == 4:
+        lst = p[3]
+    else:
+        lst = []
+    
+    lst.append(p[1])
+    p[0] = lst
 
 def p_Statement(p):
     '''Statement : ExpressionStatement
@@ -162,9 +179,15 @@ yacc.yacc()
 
 
 
-def parse_expression(s):
-    return yacc.parse(s).containee.accept(basic.Expression)
-
 def parse_statement(s):
-    return yacc.parse(s).accept(basic.Statement)
+    '''parse a statement by parsing a single-statement code block
+    and extracting the statement. Mainly for tests.'''
+    block = yacc.parse('{%s;}' % s)
+    statement = block.children[0]
+    return statement
 
+def parse_expression(s):
+    statement = parse_statement(s)
+    if isinstance(statement, statements.EmptyStatement):
+        return statement
+    return statement.accept(statements.ExpressionStatement).containee

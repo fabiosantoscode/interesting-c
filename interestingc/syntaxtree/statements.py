@@ -14,7 +14,7 @@ class Assignment(Statement):
 
 
 class Declaration(Statement):
-    def __init__(self, type_, identifier, expression=None):
+    def __init__(self, type_, identifier, expression=None, namespace=None):
         identifier = identifier.accept(Identifier)
         if expression is None:
             children = [identifier]
@@ -22,6 +22,7 @@ class Declaration(Statement):
             assignment = Assignment(identifier, expression)
             children = [identifier, assignment]
         leaf = type_.accept(Identifier)
+        self.namespace = namespace
         super(Declaration, self).__init__(children, leaf)
     
     type_ = property(lambda self:self.leaf)

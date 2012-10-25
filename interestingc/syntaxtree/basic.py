@@ -71,8 +71,9 @@ class Identifier(Expression):
     '''
      - An identifier identifies a variable, and exists in a scope.
     '''
-    def __init__(self, name):
+    def __init__(self, name, namespace=None):
         super(Identifier, self).__init__([], name)
+        self.namespace = namespace
     
     name = property(lambda self: self.leaf)
     

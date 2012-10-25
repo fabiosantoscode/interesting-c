@@ -25,9 +25,22 @@ precedence = (
 )
 
 def p_CodeBlock(p):
-    '''CodeBlock : open_brace StatementList close_brace'''
+    '''CodeBlock : NamespaceOpenBrace StatementList NamespaceCloseBrace'''
     # p[0] = namespaces.CodeBlock(p[2], p.parser.current_namespace)
     p[0] = namespaces.CodeBlock(p[2])
+
+def p_NamespaceOpenBrace(p):
+    '''NamespaceOpenBrace : open_brace'''
+    cur_namespace = getattr(p.parser, 'current_namespace', None)
+    namespace = namespaces.Namespace(parent_namespace=cur_namespace)
+    p.parser.current_namespace = namespace
+    p[0] = p[1]
+
+def p_NamespaceCloseBrace(p):
+    '''NamespaceCloseBrace : close_brace'''
+    p.parser.current_namespace = (p.parser.current_namespace
+        .parent_namespace)
+    p[0] = p[1]
 
 def p_StatementList(p):
     '''StatementList : Statement
@@ -62,10 +75,12 @@ def p_Declaration(p):
     type_ = p[1]
     ident = p[2]
     
+    ns = p.parser.current_namespace
+    
     if len(p) == 3:
-        p[0] = statements.Declaration(type_, ident)
+        p[0] = statements.Declaration(type_, ident, namespace=ns)
     elif len(p) == 5:
-        p[0] = statements.Declaration(type_, ident, p[4])
+        p[0] = statements.Declaration(type_, ident, p[4], namespace=ns)
 
 def p_Assignment(p):
     '''Assignment : Identifier equal_sign Expression'''
@@ -172,8 +187,7 @@ def p_Term(p):
 
 def p_Identifier(p):
     '''Identifier : identifier'''
-    # p[0] = basic.Identifier(p[1], p.parser.current_namespace)
-    p[0] = basic.Identifier(p[1])
+    p[0] = basic.Identifier(p[1], p.parser.current_namespace)
 
 yacc.yacc()
 

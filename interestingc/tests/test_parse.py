@@ -13,7 +13,6 @@ class ParserTest(unittest.TestCase):
         pass
     
     def test_namespaces(self):
-        raise unittest.SkipTest #TODO
         'test namespace references in identifiers and assignments'
         expr1 = parse_expression('e')
         self.assertIsInstance(expr1, Identifier)

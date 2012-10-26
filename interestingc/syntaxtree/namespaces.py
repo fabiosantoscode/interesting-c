@@ -23,8 +23,12 @@ class CodeBlock(StatementList):
         if self.parent:
             self.namespace = Namespace(
                 parent_namespace=self.parent.find_namespace())
-        else:
-            self.namespace = Namespace(parent_namespace=None)
 
 
+
+class Module(StatementList):
+    def __init__(self, statement_list=[]):
+        super(Module, self).__init__(statement_list)
+        
+        self.namespace = Namespace(parent_namespace=None)
 

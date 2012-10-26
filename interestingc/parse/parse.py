@@ -13,6 +13,7 @@ from syntaxtree import statements
 from syntaxtree import specialexpr
 from syntaxtree import literals
 from syntaxtree import namespaces
+# TODO split into namespaces.py and statementlist.py
 
 tokens = lexer.tokens
 
@@ -23,6 +24,10 @@ precedence = (
     ('left', 'and_sign', 'or_sign'),
     ('nonassoc', 'bang'),
 )
+
+def p_Module(p):
+    '''Module : StatementList'''
+    p[0] = namespaces.Module(p[1])
 
 def p_CodeBlock(p):
     '''CodeBlock : open_brace StatementList close_brace'''
@@ -178,10 +183,10 @@ yacc.yacc()
 
 
 def parse_statement(s):
-    '''parse a statement by parsing a single-statement code block
+    '''parse a statement by parsing a single-statement module
     and extracting the statement. Mainly for tests.'''
-    block = yacc.parse('{%s;}' % s)
-    statement = block.children[0]
+    module = yacc.parse('%s;' % s)
+    statement = module.children[0]
     return statement
 
 def parse_expression(s):

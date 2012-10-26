@@ -7,13 +7,34 @@ from syntaxtree.tree import SyntaxTreeNode
 
 class SyntaxTreeNodeTest(unittest.TestCase):
     def setUp(self):
-        self.testtree = SyntaxTreeNode([
-            SyntaxTreeNode([], 'child1'),
-            SyntaxTreeNode([], 'child2'),
-            SyntaxTreeNode([
-                SyntaxTreeNode([], 'grandchild'),
-            ], 'child3'),
-        ], 'root')
+        self.child1 = SyntaxTreeNode([], 'child1')
+        self.child2 = SyntaxTreeNode([], 'child2')
+        self.grandchild = SyntaxTreeNode([], 'grandchild')
+        self.child3 = SyntaxTreeNode([self.grandchild], 'child3')
+        self.testtree = SyntaxTreeNode([self.child1, self.child2,
+            self.child3], 'root')
+    
+    def test_traverse(self):
+        self.assertEqual(self.child1.get_parent(), self.testtree)
+        self.assertEqual(self.grandchild.get_parent(), self.child3)
+        self.assertRaises(Exception, self.testtree.get_parent)
+        
+        self.assertEqual(self.child2.get_next(), self.child3)
+        self.assertRaises(IndexError, self.child3.get_next)
+        self.assertEqual(self.child2.get_previous(), self.child1)
+        self.assertRaises(IndexError, self.child1.get_previous)
+        
+        self.assertEqual(self.grandchild.get_all_in_level(),
+            [self.grandchild])
+        self.assertEqual(self.child2.get_all_in_level(),
+            [self.child1, self.child2, self.child3])
+        self.assertEqual(self.child3.get_silblings(),
+            [self.child1, self.child2])
+        
+        self.assertEqual(list(self.grandchild.ancestors()),
+            [self.child3, self.testtree])
+        
+        self.assertEqual(self.grandchild.get_ancestor(lambda anc: anc is self.child3), self.child3)
     
     def test_accept(self):
         class Expr(SyntaxTreeNode): pass

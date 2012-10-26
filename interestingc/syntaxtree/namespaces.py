@@ -8,9 +8,23 @@ class Namespace(object):
 
 
 
-class CodeBlock(SyntaxTreeNode):
-    def __init__(self, statement_list=[], current_namespace=None):
-        self.current_namespace = current_namespace
+class StatementList(SyntaxTreeNode):
+    def __init__(self, statement_list=[]):
         children = list(statement_list)
         leaf = '{ code block }'
-        super(CodeBlock, self).__init__(children, leaf)
+        super(StatementList, self).__init__(children, leaf)
+
+
+
+class CodeBlock(StatementList):
+    def __init__(self, statement_list=[]):
+        super(CodeBlock, self).__init__(statement_list)
+        
+        if self.parent:
+            self.namespace = Namespace(
+                parent_namespace=self.parent.find_namespace())
+        else:
+            self.namespace = Namespace(parent_namespace=None)
+
+
+

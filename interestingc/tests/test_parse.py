@@ -14,11 +14,8 @@ class ParserTest(unittest.TestCase):
     
     def test_namespaces(self):
         'test namespace references in identifiers and assignments'
-        expr1 = parse_expression('e')
-        self.assertIsInstance(expr1, Identifier)
-        self.assertIsInstance(expr1.namespace, Namespace)
         stmt1 = parse_statement('int a')
-        self.assertIsInstance(stmt1.namespace, Namespace)
+        self.assertIsInstance(stmt1.get_namespace(), Namespace)
     
     def test_noexpression(self):
         noexp = parse_expression('')

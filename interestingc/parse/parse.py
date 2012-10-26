@@ -13,7 +13,7 @@ from syntaxtree import statements
 from syntaxtree import specialexpr
 from syntaxtree import literals
 from syntaxtree import namespaces
-# TODO split into namespaces.py and statementlist.py
+from syntaxtree import statementlist
 
 tokens = lexer.tokens
 
@@ -27,11 +27,11 @@ precedence = (
 
 def p_Module(p):
     '''Module : StatementList'''
-    p[0] = namespaces.Module(p[1])
+    p[0] = statementlist.Module(p[1])
 
 def p_CodeBlock(p):
     '''CodeBlock : open_brace StatementList close_brace'''
-    p[0] = namespaces.CodeBlock(p[2])
+    p[0] = statementlist.CodeBlock(p[2])
 
 def p_StatementList(p):
     '''StatementList : Statement

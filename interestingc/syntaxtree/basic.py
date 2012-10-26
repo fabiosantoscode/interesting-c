@@ -1,10 +1,6 @@
 
 from tree import SyntaxTreeNode
 
-#class Module(object):
-
-#class ModuleLevels(object):
-
 #class Object(object):
 #    '''
 #     - Exists

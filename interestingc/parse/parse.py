@@ -150,7 +150,7 @@ def p_ComparisonSign(p):
                       | greater_than_or_equal_sign
                       | not_equal_sign
                       | double_equal_sign'''
-    p[0] = ''.join(p[1:][:2])
+    p[0] = p[1]
     
 
 # the ternary

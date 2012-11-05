@@ -197,3 +197,5 @@ def parse_expression(s):
         return statement.accept(statements.ExpressionStatement
             ).containee
 
+def parse_module(module):
+    return yacc.parse(module)

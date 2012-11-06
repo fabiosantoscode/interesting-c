@@ -13,6 +13,7 @@ from syntaxtree import statements
 from syntaxtree import specialexpr
 from syntaxtree import literals
 from syntaxtree import namespaces
+from syntaxtree import functions
 from syntaxtree import statementlist
 
 tokens = lexer.tokens
@@ -28,6 +29,36 @@ precedence = (
 def p_Module(p):
     '''Module : StatementList'''
     p[0] = statementlist.Module(p[1])
+
+def p_ArgumentList(p):
+    '''ArgumentList : Expression
+                    | Expression comma ArgumentList'''
+    if len(p) == 4:
+        lst = p[3]
+    else:
+        lst = []
+    
+    lst.append(p[1])
+    p[0] = lst
+
+def p_TypedArgumentList(p):
+    '''TypedArgumentList : TypedArgument
+                         | TypedArgument comma TypedArgumentList'''
+    if len(p) == 4:
+        lst = p[3]
+    else:
+        lst = []
+    
+    lst.append(p[1])
+    p[0] = lst
+    
+def p_TypedArgument(p):
+    '''TypedArgument : Identifier Identifier'''
+    p[0] = functions.TypedArgument(p[1], p[2]) 
+
+def p_FunctionDefinition(p):
+    '''FunctionDefinition : Identifier Identifier open_paren TypedArgumentList close_paren CodeBlock'''
+    p[0] = functions.FunctionDefinition(p[1], p[2], p[4], p[5])
 
 def p_CodeBlock(p):
     '''CodeBlock : open_brace StatementList close_brace'''

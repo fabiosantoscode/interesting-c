@@ -5,12 +5,17 @@ from syntaxtree.basic import Literal, Identifier
 from syntaxtree import expressions
 from syntaxtree import specialexpr
 from syntaxtree import statements
+from syntaxtree import functions
 from syntaxtree.namespaces import Namespace
 
 
 class ParserTest(unittest.TestCase):
     def setUp(self):
         pass
+    
+    def test_function(self):
+        blk = parse_statement('int a(){}')
+        self.assertIsInstance(blk, functions.FunctionDefinition)
     
     def test_namespaces(self):
         'test namespace references in identifiers and assignments'

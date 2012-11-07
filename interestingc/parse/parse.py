@@ -31,34 +31,46 @@ def p_Module(p):
     p[0] = statementlist.Module(p[1])
 
 def p_ArgumentList(p):
-    '''ArgumentList : Expression
-                    | Expression comma ArgumentList'''
+    '''ArgumentList : _ArgumentList'''
+    p[0] = functions.ArgumentList(p[1])
+
+def p__ArgumentList(p):
+    '''_ArgumentList : Expression
+                    | Expression comma ArgumentList
+                    |'''
     if len(p) == 4:
         lst = p[3]
     else:
         lst = []
     
-    lst.append(p[1])
+    if len(p) > 1:
+        lst.append(p[1])
     p[0] = lst
 
 def p_TypedArgumentList(p):
-    '''TypedArgumentList : TypedArgument
-                         | TypedArgument comma TypedArgumentList'''
+    '''TypedArgumentList : _TypedArgumentList'''
+    p[0] = functions.TypedArgumentList(p[1])
+
+def p__TypedArgumentList(p):
+    '''_TypedArgumentList : TypedArgument
+                         | TypedArgument comma TypedArgumentList
+                         | '''
     if len(p) == 4:
         lst = p[3]
     else:
         lst = []
     
-    lst.append(p[1])
+    if len(p) > 1:
+        lst.append(p[1])
     p[0] = lst
     
 def p_TypedArgument(p):
     '''TypedArgument : Identifier Identifier'''
-    p[0] = functions.TypedArgument(p[1], p[2]) 
+    p[0] = functions.TypedArgument(p[1], p[2])
 
 def p_FunctionDefinition(p):
     '''FunctionDefinition : Identifier Identifier open_paren TypedArgumentList close_paren CodeBlock'''
-    p[0] = functions.FunctionDefinition(p[1], p[2], p[4], p[5])
+    p[0] = functions.FunctionDefinition(p[1], p[2], p[4], p[6])
 
 def p_CodeBlock(p):
     '''CodeBlock : open_brace StatementList close_brace'''
@@ -67,20 +79,23 @@ def p_CodeBlock(p):
 def p_StatementList(p):
     '''StatementList : Statement
                      | Statement semicolon
-                     | Statement semicolon StatementList'''
+                     | Statement semicolon StatementList
+                     | '''
     if len(p) == 4:
         lst = p[3]
     else:
         lst = []
     
-    lst.append(p[1])
+    if len(p) > 1:
+        lst.append(p[1])
     p[0] = lst
 
 def p_Statement(p):
     '''Statement : ExpressionStatement
                  | EmptyStatement
                  | Assignment
-                 | Declaration'''
+                 | Declaration
+                 | FunctionDefinition'''
     p[0] = p[1].accept(basic.Statement)
 
 def p_EmptyStatement(p):

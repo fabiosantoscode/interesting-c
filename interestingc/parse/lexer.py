@@ -19,7 +19,7 @@ tokens = [
     'whitespace',
     
     # 'multiline_comment', unused
-    'singleline_comment',
+    # 'singleline_comment', unused
     
     'identifier',
     
@@ -48,7 +48,7 @@ tokens = [
     'semicolon',
     'comma',
     'colon',
-    'dot',
+    # 'dot', unused
     # 'hash', unused
     'bang',
     'question_mark',
@@ -114,7 +114,7 @@ t_or_sign = r'\|\|'
 t_semicolon = r';'
 t_comma = r','
 t_colon = r':'
-t_dot = r'\.'
+# t_dot = r'\.'
 # t_hash = r'\#'
 t_bang = r'!'
 t_question_mark = r'\?'

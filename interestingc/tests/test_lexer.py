@@ -69,13 +69,12 @@ class LexerTest(unittest.TestCase):
         #     ('octal_number_literal', '031')])
         
         self.assertEqual(update_and_get_names(
-                '{}()?;:.,!*+/'), [
+                '{}()?;:,!*+/'), [
             'open_brace', 'close_brace',
             'open_paren', 'close_paren',
             'question_mark',
             'semicolon',
             'colon',
-            'dot',
             'comma',
             'bang',
             'times_sign',
@@ -126,17 +125,15 @@ class LexerTest(unittest.TestCase):
         # self.assertEqual(update_and_get_names(' @ '), ['at_sign'])
     
     def test_cut_identifiers(self):
-        self.assertEqual(update('id.ntifier'), [
+        self.assertEqual(update('id-ntifier'), [
             ('identifier','id'),
-            ('dot', '.'),
+            ('minus_sign', '-'),
             ('identifier', 'ntifier')])
         
-        self.assertEqual(update('id+nti0f.ier'), [
+        self.assertEqual(update('id+nti0fier'), [
             ('identifier','id'),
             ('plus_sign', '+'),
-            ('identifier', 'nti0f'),
-            ('dot', '.'),
-            ('identifier', 'ier')])
+            ('identifier', 'nti0fier')])
     
     def test_complete_func(self):
         self.assertSomeTokens('''

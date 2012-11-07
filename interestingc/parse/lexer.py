@@ -12,49 +12,50 @@ import ply.lex as lex
 
 reserved = {
     'return': 'return',
-    'function': 'function',
+    # 'function': 'function', unused
 }
 
 tokens = [
     'whitespace',
     
-    'multiline_comment', 'singleline_comment',
+    # 'multiline_comment', unused
+    'singleline_comment',
     
     'identifier',
     
     #literals including prefixes and suffixes
-    'string_literal',
-    'character_literal',
+    # 'string_literal', unused
+    # 'character_literal', unused
     
-    'hexadecimal_number_literal',
-    'octal_number_literal',
+    # 'hexadecimal_number_literal', unused
+    # 'octal_number_literal', unused
     'decimal_number_literal',
     
-    'hexadecimal_fractional_number_literal',
-    'octal_fractional_number_literal',
-    'decimal_fractional_number_literal',
+    # 'hexadecimal_fractional_number_literal', unused
+    # 'octal_fractional_number_literal', unused
+    # 'decimal_fractional_number_literal', unused
     
     #signs and characters
     'equal_sign',
     'plus_sign',
     'minus_sign',
     'times_sign',
-    'at_sign',
-    'solidus',
+    # 'at_sign', unused
+    # 'solidus', unused
     'reverse_solidus',
-    'pipe',
+    # 'pipe', unused
     'or_sign',
     'semicolon',
     'comma',
     'colon',
     'dot',
-    'hash',
+    # 'hash', unused
     'bang',
     'question_mark',
     'and_sign',
-    'ampersand',
-    'percent_sign',
-    'siphon',
+    # 'ampersand', unused
+    # 'percent_sign', unused
+    # 'siphon', unused
     
     #comparisons
     'less_than_sign',
@@ -67,7 +68,7 @@ tokens = [
     # Open/close
     'open_paren', 'close_paren',
     'open_brace', 'close_brace',
-    'open_square', 'close_square',
+    # 'open_square', 'close_square', unused
 ] + list(reserved.values())
 
 def t_error(t):
@@ -78,21 +79,21 @@ def t_whitespace(t):
     t.is_newline = '\n' in t.value
     return None
 
-t_singleline_comment = r'//.*'
-t_multiline_comment = r'/\*.*?\*/'
+# t_singleline_comment = r'//.*'
+# t_multiline_comment = r'/\*.*?\*/'
 t_identifier = r'[_a-zA-Z][_a-zA-Z0-9]*'
 
 
 
 #literals including prefixes and suffixes
-t_string_literal = r'".*?(?<=[^\\])("|\\\\")'
+# t_string_literal = r'".*?(?<=[^\\])("|\\\\")'
     #so far: '".*(?<=[^\\])(?=\\\\"|")(?=")"'
     # it does match "strings \"escaping\" slashes"
     # but doesn't match "strings ending with a slash \\"
     #UPDATE: r'".*?(?<=[^\\])("|\\\\")'
-t_character_literal = r"\w?'\w'"
-t_hexadecimal_number_literal = r'0[xX][0-9A-Fa-f]+\.[0-9A-Fa-f]+?'
-t_octal_number_literal = r'0[0-9]+'
+# t_character_literal = r"\w?'\w'"
+# t_hexadecimal_number_literal = r'0[xX][0-9A-Fa-f]+\.[0-9A-Fa-f]+?'
+# t_octal_number_literal = r'0[0-9]+'
 t_decimal_number_literal = r'[0-9]+'
 
 # 'hexadecimal_fractional_number_literal',
@@ -105,22 +106,22 @@ t_equal_sign = r'='
 t_plus_sign = r'\+'
 t_minus_sign = r'-'
 t_times_sign = r'\*'
-t_at_sign = r'@'
-t_solidus = r'\\'
+# t_at_sign = r'@'
+# t_solidus = r'\\'
 t_reverse_solidus = r'(/(?=[^/^*])|/$)'
-t_pipe = r'\|'
+# t_pipe = r'\|'
 t_or_sign = r'\|\|'
 t_semicolon = r';'
 t_comma = r','
 t_colon = r':'
 t_dot = r'\.'
-t_hash = r'\#'
+# t_hash = r'\#'
 t_bang = r'!'
 t_question_mark = r'\?'
 t_and_sign = r'&&'
-t_ampersand = r'&'
-t_percent_sign = r'%'
-t_siphon = r'\$'
+# t_ampersand = r'&'
+# t_percent_sign = r'%'
+# t_siphon = r'\$'
 
 # stuff that opens and closes
 t_open_paren = r'\('
@@ -129,8 +130,8 @@ t_close_paren = r'\)'
 t_open_brace = r'{'
 t_close_brace = r'}'
 
-t_open_square = r'\['
-t_close_square = r'\]'
+# t_open_square = r'\['
+# t_close_square = r'\]'
 
 t_less_than_sign = r'<'
 t_greater_than_sign = r'>'

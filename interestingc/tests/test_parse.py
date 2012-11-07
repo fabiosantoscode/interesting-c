@@ -74,7 +74,7 @@ class ParserTest(unittest.TestCase):
         '''
         The difference between a plain comparison and a chain
         comparison is that a regular comparison is binary, while the
-        chain comparison is n-ary
+        chain comparison is n-ary. If if were binary...
         
         expression:
             1 < 2 < 3

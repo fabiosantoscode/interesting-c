@@ -8,7 +8,7 @@ from compilation.compilation import Compiler
 class TestCompiler(unittest.TestCase):
     def setUp(self):
         self.cfile = StringIO('''
-            int main(int argc, char* argv[]){
+            int main(){
                 return 0;
             }''')
     
